@@ -34,6 +34,7 @@ class TokenService {
         token.save()
     }
 
+    
     /**
      * Encriptar una cadena
      * @param string
@@ -41,10 +42,7 @@ class TokenService {
      */
     def encrypt(string){
         def jasyptConfig    = grailsApplication.config.jasypt
-
         def stringEncryptor = new StandardPBEStringEncryptor(jasyptConfig)
-
-
         return stringEncryptor.encrypt(string)
     }
 
@@ -54,11 +52,8 @@ class TokenService {
      * @return
      */
     def decrypt(token){
-
         def jasyptConfig    = grailsApplication.config.jasypt
-
         def stringEncryptor = new StandardPBEStringEncryptor(jasyptConfig)
-
         return stringEncryptor.decrypt(token)
     }
 
@@ -80,9 +75,7 @@ class TokenService {
      */
     def use_token(token){
         def find_token = Token.findByToken(token)
-
         find_token.tokenStatus = true
-
         return find_token.save()
     }
 
