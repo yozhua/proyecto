@@ -56,7 +56,7 @@ class Bitacora {
 
     static mapping = {
 		version false
-		problema (type:'blob')		
-		observaciones (type:'blob')
+		problema (type:'text')		
+		observaciones (type:'text')
 	}
 }

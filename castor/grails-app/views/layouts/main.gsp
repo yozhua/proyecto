@@ -18,21 +18,19 @@
               
     <asset:javascript src="alertify.js"/>
     <asset:stylesheet src="alertify.min.css"/>
-    
+    <asset:stylesheet src="jquery-ui.min.css"/>
     <asset:javascript src="Chart.js"/>
     <asset:stylesheet src="bootstrap.min.css"/>   
     <asset:stylesheet src="style.css"/>  
     <asset:stylesheet src="font-awesome.css"/> 
     <asset:stylesheet src="icon-font.min.css"/>
-    <asset:stylesheet src="animate.css"/>   
-    
-
-    
+    <asset:stylesheet src="animate.css"/>       
     
     <asset:javascript src="jquery-2.2.0.min.js"/> 
-    
+    <asset:javascript src="jquery-ui.min.js"/>
     <asset:javascript src="jquery.flexisel.js"/>
     <asset:javascript src="myjavascript.js"/>
+    <asset:javascript src="reloj.js"/>
     <asset:javascript src="wow.min.js"/>
     <asset:javascript src="jquery.flot.min.js"/>
     <asset:javascript src="uisearch.js"/>

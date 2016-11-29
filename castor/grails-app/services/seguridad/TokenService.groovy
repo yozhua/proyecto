@@ -1,5 +1,4 @@
 package seguridad
-import grails.transaction.Transactional
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor
 import com.castor.seguridad.Token
 import org.apache.commons.validator.routines.EmailValidator 

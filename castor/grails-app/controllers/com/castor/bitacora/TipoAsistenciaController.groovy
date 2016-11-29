@@ -1,4 +1,4 @@
-package com.castor.empleado
+package com.castor.bitacora
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.converters.JSON
@@ -17,96 +17,91 @@ import javax.servlet.http.HttpServletResponse
 
 @Secured('ROLE_ADMIN,ROLE_ADMINISTRATIVO,ROLE_TECNICO,ROLE_GERENCIA')
 @Transactional(readOnly = true)
-class EmpleadoController {
+class TipoAsistenciaController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-
+   
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Empleado.list(params), model:[empleadoCount: Empleado.count()]
+        respond TipoAsistencia.list(params), model:[tipoAsistenciaCount: TipoAsistencia.count()]
     }
 
-    def getUsuarioSoporte(id){
-        def usuarioSoporte = User.findAllWhere(autorizacion: id)                     
-        render usuarioSoporte as JSON
-    }
-
-    def show(Empleado empleado) {
-        respond empleado
+    def show(TipoAsistencia tipoAsistencia) {
+        respond tipoAsistencia
     }
 
     def create() {
-        respond new Empleado(params)
-    }    
+        respond new TipoAsistencia(params)
+    }
 
     @Transactional
-    def save(Empleado empleado) {
-        if (empleado == null) {
+    def save(TipoAsistencia tipoAsistencia) {
+        if (tipoAsistencia == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (empleado.hasErrors()) {
+        if (tipoAsistencia.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond empleado.errors, view:'create'
+            respond tipoAsistencia.errors, view:'create'
             return
         }
 
-        empleado.save flush:true
+        tipoAsistencia.save flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'empleado.label', default: 'Empleado'), empleado.id])
-                redirect empleado
+                flash.message = message(code: 'default.created.message', args: [message(code: 'tipoAsistencia.label', default: 'TipoAsistencia'), tipoAsistencia.id])
+                redirect tipoAsistencia
             }
-            '*' { respond empleado, [status: CREATED] }
+            '*' { respond tipoAsistencia, [status: CREATED] }
         }
     }
 
-    def edit(Empleado empleado) {
-        respond empleado
+    def edit(TipoAsistencia tipoAsistencia) {
+        respond tipoAsistencia
     }
 
     @Transactional
-    def update(Empleado empleado) {
-        if (empleado == null) {
+    def update(TipoAsistencia tipoAsistencia) {
+        if (tipoAsistencia == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (empleado.hasErrors()) {
+        if (tipoAsistencia.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond empleado.errors, view:'edit'
+            respond tipoAsistencia.errors, view:'edit'
             return
         }
 
-        empleado.save flush:true
+        tipoAsistencia.save flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'empleado.label', default: 'Empleado'), empleado.id])
-                redirect empleado
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'tipoAsistencia.label', default: 'TipoAsistencia'), tipoAsistencia.id])
+                redirect tipoAsistencia
             }
-            '*'{ respond empleado, [status: OK] }
+            '*'{ respond tipoAsistencia, [status: OK] }
         }
     }
 
     @Transactional
-    def delete(Empleado empleado) {
+    def delete(TipoAsistencia tipoAsistencia) {
 
-        if (empleado == null) {
+        if (tipoAsistencia == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        empleado.delete flush:true
+        tipoAsistencia.delete flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'empleado.label', default: 'Empleado'), empleado.id])
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'tipoAsistencia.label', default: 'TipoAsistencia'), tipoAsistencia.id])
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }
@@ -116,7 +111,7 @@ class EmpleadoController {
     protected void notFound() {
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'empleado.label', default: 'Empleado'), params.id])
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'tipoAsistencia.label', default: 'TipoAsistencia'), params.id])
                 redirect action: "index", method: "GET"
             }
             '*'{ render status: NOT_FOUND }

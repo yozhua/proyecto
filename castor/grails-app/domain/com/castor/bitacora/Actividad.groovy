@@ -17,7 +17,7 @@ class Actividad {
     }
 
     static mapping = {
-		actividad (type:'blob')		
+		actividad (type:'text')		
 		version false	
 	}
 }
