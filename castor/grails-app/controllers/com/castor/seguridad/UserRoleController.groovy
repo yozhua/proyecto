@@ -1,7 +1,11 @@
-package com.castor.cliente
+package com.castor.seguridad
+import seguridad.UserService
+import org.apache.commons.validator.routines.EmailValidator
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.converters.JSON
+import grails.converters.*
+import groovy.transform.ToString
 import grails.plugin.springsecurity.SpringSecurityUtils
 import org.springframework.security.access.annotation.Secured
 import org.springframework.security.authentication.AccountExpiredException
@@ -17,100 +21,90 @@ import javax.servlet.http.HttpServletResponse
 
 @Secured('permitAll')
 @Transactional(readOnly = true)
-class SucursalController {
+class UserRoleController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def getAllSucursales(){
-        def sucursales = Sucursal.list()        
-        render sucursales as JSON
-    }
-
-    def busqueda() {
-        render view: '/sucursal/find'
-    }
-
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Sucursal.list(params), model:[sucursalCount: Sucursal.count()]
+        respond UserRole.list(params), model:[userRoleCount: UserRole.count()]
     }
 
-    def show(Sucursal sucursal) {
-        respond sucursal
+    def show(UserRole userRole) {
+        respond userRole
     }
 
     def create() {
-        respond new Sucursal(params)
+        respond new UserRole(params)
     }
 
     @Transactional
-    def save(Sucursal sucursal) {
-        if (sucursal == null) {
+    def save(UserRole userRole) {
+        def userol = JSON.parse(params.userrole)
+        println userol as JSON
+
+        userRole.user = User.get(userol.user)
+        userRole.role = Role.get(userol.role)
+
+        println userRole as JSON
+        if (userRole == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (sucursal.hasErrors()) {
+        if (!userRole.validate()) {
             transactionStatus.setRollbackOnly()
-            respond sucursal.errors, view:'create'
+            respond userRole.errors
             return
         }
 
-        sucursal.save flush:true
+        userRole.save flush:true
+    }
+
+    def edit(UserRole userRole) {
+        respond userRole
+    }
+
+    @Transactional
+    def update(UserRole userRole) {
+        if (userRole == null) {
+            transactionStatus.setRollbackOnly()
+            notFound()
+            return
+        }
+
+        if (userRole.hasErrors()) {
+            transactionStatus.setRollbackOnly()
+            respond userRole.errors, view:'edit'
+            return
+        }
+
+        userRole.save flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'sucursal.label', default: 'Sucursal'), sucursal.id])
-                redirect sucursal
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'userRole.label', default: 'UserRole'), userRole.id])
+                redirect userRole
             }
-            '*' { respond sucursal, [status: CREATED] }
+            '*'{ respond userRole, [status: OK] }
         }
     }
 
-    def edit(Sucursal sucursal) {
-        respond sucursal
-    }
-
     @Transactional
-    def update(Sucursal sucursal) {
-        if (sucursal == null) {
+    def delete(UserRole userRole) {
+
+        if (userRole == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (sucursal.hasErrors()) {
-            transactionStatus.setRollbackOnly()
-            respond sucursal.errors, view:'edit'
-            return
-        }
-
-        sucursal.save flush:true
+        userRole.delete flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'sucursal.label', default: 'Sucursal'), sucursal.id])
-                redirect sucursal
-            }
-            '*'{ respond sucursal, [status: OK] }
-        }
-    }
-
-    @Transactional
-    def delete(Sucursal sucursal) {
-
-        if (sucursal == null) {
-            transactionStatus.setRollbackOnly()
-            notFound()
-            return
-        }
-
-        sucursal.delete flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'sucursal.label', default: 'Sucursal'), sucursal.id])
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'userRole.label', default: 'UserRole'), userRole.id])
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }
@@ -120,11 +114,10 @@ class SucursalController {
     protected void notFound() {
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'sucursal.label', default: 'Sucursal'), params.id])
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'userRole.label', default: 'UserRole'), params.id])
                 redirect action: "index", method: "GET"
             }
             '*'{ render status: NOT_FOUND }
         }
     }
 }
-

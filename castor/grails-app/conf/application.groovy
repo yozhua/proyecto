@@ -21,11 +21,16 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	[pattern: '/bitacora/edit',     access: ['permitAll']],
 	[pattern: '/bitacora/show',     access: ['permitAll']],
 	[pattern: '/bitacora/create', access: ['permitAll']],
+	[pattern: '/bitacora/find', access: ['permitAll']],
+	[pattern: '/cliente/create', access: ['permitAll']],
+	[pattern: '/cliente/edit', access: ['permitAll']],
 	[pattern: '/user/restore_pass', access: ['permitAll']],
    	[pattern: '/user/send_email',   access: ['permitAll']],
     [pattern: '/user/change_pass',  access: ['permitAll']],
     [pattern: '/user/update_pass',  access: ['permitAll']],
-	[pattern: '/**/favicon.ico', access: ['permitAll']]
+	[pattern: '/**/favicon.ico', access: ['permitAll']],
+	[pattern: '/empleado/create', access: ['permitAll']]
+
 ]
 
 grails.plugin.springsecurity.filterChain.chainMap = [
@@ -36,4 +41,3 @@ grails.plugin.springsecurity.filterChain.chainMap = [
 	[pattern: '/**/favicon.ico', filters: 'none'],
 	[pattern: '/**',             filters: 'JOINED_FILTERS']
 ]
-

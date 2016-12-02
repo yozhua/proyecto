@@ -1,31 +1,11 @@
 package com.castor.cliente
 
-<<<<<<< HEAD
-import grails.test.mixin.TestFor
-import spock.lang.Specification
-
-/**
- * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
- */
-@TestFor(ClienteController)
-class ClienteControllerSpec extends Specification {
-
-    def setup() {
-    }
-
-    def cleanup() {
-    }
-
-    void "test something"() {
-        expect:"fix me"
-            true == false
-=======
 import grails.test.mixin.*
 import spock.lang.*
 
-@TestFor(ClienteController)
-@Mock(Cliente)
-class ClienteControllerSpec extends Specification {
+@TestFor(TipoClienteController)
+@Mock(TipoCliente)
+class TipoClienteControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
@@ -41,8 +21,8 @@ class ClienteControllerSpec extends Specification {
             controller.index()
 
         then:"The model is correct"
-            !model.clienteList
-            model.clienteCount == 0
+            !model.tipoClienteList
+            model.tipoClienteCount == 0
     }
 
     void "Test the create action returns the correct model"() {
@@ -50,7 +30,7 @@ class ClienteControllerSpec extends Specification {
             controller.create()
 
         then:"The model is correctly created"
-            model.cliente!= null
+            model.tipoCliente!= null
     }
 
     void "Test the save action correctly persists an instance"() {
@@ -58,25 +38,25 @@ class ClienteControllerSpec extends Specification {
         when:"The save action is executed with an invalid instance"
             request.contentType = FORM_CONTENT_TYPE
             request.method = 'POST'
-            def cliente = new Cliente()
-            cliente.validate()
-            controller.save(cliente)
+            def tipoCliente = new TipoCliente()
+            tipoCliente.validate()
+            controller.save(tipoCliente)
 
         then:"The create view is rendered again with the correct model"
-            model.cliente!= null
+            model.tipoCliente!= null
             view == 'create'
 
         when:"The save action is executed with a valid instance"
             response.reset()
             populateValidParams(params)
-            cliente = new Cliente(params)
+            tipoCliente = new TipoCliente(params)
 
-            controller.save(cliente)
+            controller.save(tipoCliente)
 
         then:"A redirect is issued to the show action"
-            response.redirectedUrl == '/cliente/show/1'
+            response.redirectedUrl == '/tipoCliente/show/1'
             controller.flash.message != null
-            Cliente.count() == 1
+            TipoCliente.count() == 1
     }
 
     void "Test that the show action returns the correct model"() {
@@ -88,11 +68,11 @@ class ClienteControllerSpec extends Specification {
 
         when:"A domain instance is passed to the show action"
             populateValidParams(params)
-            def cliente = new Cliente(params)
-            controller.show(cliente)
+            def tipoCliente = new TipoCliente(params)
+            controller.show(tipoCliente)
 
         then:"A model is populated containing the domain instance"
-            model.cliente == cliente
+            model.tipoCliente == tipoCliente
     }
 
     void "Test that the edit action returns the correct model"() {
@@ -104,11 +84,11 @@ class ClienteControllerSpec extends Specification {
 
         when:"A domain instance is passed to the edit action"
             populateValidParams(params)
-            def cliente = new Cliente(params)
-            controller.edit(cliente)
+            def tipoCliente = new TipoCliente(params)
+            controller.edit(tipoCliente)
 
         then:"A model is populated containing the domain instance"
-            model.cliente == cliente
+            model.tipoCliente == tipoCliente
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
@@ -118,28 +98,28 @@ class ClienteControllerSpec extends Specification {
             controller.update(null)
 
         then:"A 404 error is returned"
-            response.redirectedUrl == '/cliente/index'
+            response.redirectedUrl == '/tipoCliente/index'
             flash.message != null
 
         when:"An invalid domain instance is passed to the update action"
             response.reset()
-            def cliente = new Cliente()
-            cliente.validate()
-            controller.update(cliente)
+            def tipoCliente = new TipoCliente()
+            tipoCliente.validate()
+            controller.update(tipoCliente)
 
         then:"The edit view is rendered again with the invalid instance"
             view == 'edit'
-            model.cliente == cliente
+            model.tipoCliente == tipoCliente
 
         when:"A valid domain instance is passed to the update action"
             response.reset()
             populateValidParams(params)
-            cliente = new Cliente(params).save(flush: true)
-            controller.update(cliente)
+            tipoCliente = new TipoCliente(params).save(flush: true)
+            controller.update(tipoCliente)
 
         then:"A redirect is issued to the show action"
-            cliente != null
-            response.redirectedUrl == "/cliente/show/$cliente.id"
+            tipoCliente != null
+            response.redirectedUrl == "/tipoCliente/show/$tipoCliente.id"
             flash.message != null
     }
 
@@ -150,24 +130,23 @@ class ClienteControllerSpec extends Specification {
             controller.delete(null)
 
         then:"A 404 is returned"
-            response.redirectedUrl == '/cliente/index'
+            response.redirectedUrl == '/tipoCliente/index'
             flash.message != null
 
         when:"A domain instance is created"
             response.reset()
             populateValidParams(params)
-            def cliente = new Cliente(params).save(flush: true)
+            def tipoCliente = new TipoCliente(params).save(flush: true)
 
         then:"It exists"
-            Cliente.count() == 1
+            TipoCliente.count() == 1
 
         when:"The domain instance is passed to the delete action"
-            controller.delete(cliente)
+            controller.delete(tipoCliente)
 
         then:"The instance is deleted"
-            Cliente.count() == 0
-            response.redirectedUrl == '/cliente/index'
+            TipoCliente.count() == 0
+            response.redirectedUrl == '/tipoCliente/index'
             flash.message != null
->>>>>>> c046182db4d771c62dbe4eec18094f311b488d63
     }
 }

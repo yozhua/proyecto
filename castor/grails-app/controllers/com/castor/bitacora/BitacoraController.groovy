@@ -15,7 +15,7 @@ import org.springframework.security.web.WebAttributes
 
 import javax.servlet.http.HttpServletResponse
 
-@Secured('ROLE_ADMIN,ROLE_ADMINISTRATIVO,ROLE_TECNICO,ROLE_GERENCIA')
+@Secured('permitAll')
 @Transactional(readOnly = true)
 class BitacoraController {
 
@@ -33,6 +33,11 @@ class BitacoraController {
     def create() {
         respond new Bitacora(params)
     }
+
+    def busqueda() {
+        render view: '/bitacora/find'
+    }
+
 
     @Transactional
     def save(Bitacora bitacora) {

@@ -48,10 +48,5 @@
 			</div>	
 		</div>			
 	</section>     
-	<script>
-		(function() {
-			document.forms['loginForm'].elements['${usernameParameter ?: 'username'}'].focus();
-		})();
-	</script>	
 </body>
 </html>

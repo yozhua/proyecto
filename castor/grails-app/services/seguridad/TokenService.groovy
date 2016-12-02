@@ -1,4 +1,5 @@
 package seguridad
+import grails.transaction.Transactional
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor
 import com.castor.seguridad.Token
 import org.apache.commons.validator.routines.EmailValidator 
@@ -33,7 +34,6 @@ class TokenService {
         token.save()
     }
 
-    
     /**
      * Encriptar una cadena
      * @param string
@@ -51,6 +51,7 @@ class TokenService {
      * @return
      */
     def decrypt(token){
+
         def jasyptConfig    = grailsApplication.config.jasypt
         def stringEncryptor = new StandardPBEStringEncryptor(jasyptConfig)
         return stringEncryptor.decrypt(token)

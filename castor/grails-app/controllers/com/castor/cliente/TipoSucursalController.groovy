@@ -1,4 +1,5 @@
 package com.castor.cliente
+
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.converters.JSON
@@ -15,102 +16,92 @@ import org.springframework.security.web.WebAttributes
 
 import javax.servlet.http.HttpServletResponse
 
-@Secured('permitAll')
 @Transactional(readOnly = true)
-class SucursalController {
+class TipoSucursalController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def getAllSucursales(){
-        def sucursales = Sucursal.list()        
-        render sucursales as JSON
-    }
-
-    def busqueda() {
-        render view: '/sucursal/find'
-    }
-
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Sucursal.list(params), model:[sucursalCount: Sucursal.count()]
+        respond TipoSucursal.list(params), model:[tipoSucursalCount: TipoSucursal.count()]
     }
 
-    def show(Sucursal sucursal) {
-        respond sucursal
+    def show(TipoSucursal tipoSucursal) {
+        respond tipoSucursal
     }
 
     def create() {
-        respond new Sucursal(params)
+        respond new TipoSucursal(params)
     }
 
     @Transactional
-    def save(Sucursal sucursal) {
-        if (sucursal == null) {
+    def save(TipoSucursal tipoSucursal) {
+        if (tipoSucursal == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (sucursal.hasErrors()) {
+        if (tipoSucursal.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond sucursal.errors, view:'create'
+            respond tipoSucursal.errors, view:'create'
             return
         }
 
-        sucursal.save flush:true
+        tipoSucursal.save flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'sucursal.label', default: 'Sucursal'), sucursal.id])
-                redirect sucursal
+                flash.message = message(code: 'default.created.message', args: [message(code: 'tipoSucursal.label', default: 'TipoSucursal'), tipoSucursal.id])
+                redirect tipoSucursal
             }
-            '*' { respond sucursal, [status: CREATED] }
+            '*' { respond tipoSucursal, [status: CREATED] }
         }
     }
 
-    def edit(Sucursal sucursal) {
-        respond sucursal
+    def edit(TipoSucursal tipoSucursal) {
+        respond tipoSucursal
     }
 
     @Transactional
-    def update(Sucursal sucursal) {
-        if (sucursal == null) {
+    def update(TipoSucursal tipoSucursal) {
+        if (tipoSucursal == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (sucursal.hasErrors()) {
+        if (tipoSucursal.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond sucursal.errors, view:'edit'
+            respond tipoSucursal.errors, view:'edit'
             return
         }
 
-        sucursal.save flush:true
+        tipoSucursal.save flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'sucursal.label', default: 'Sucursal'), sucursal.id])
-                redirect sucursal
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'tipoSucursal.label', default: 'TipoSucursal'), tipoSucursal.id])
+                redirect tipoSucursal
             }
-            '*'{ respond sucursal, [status: OK] }
+            '*'{ respond tipoSucursal, [status: OK] }
         }
     }
 
     @Transactional
-    def delete(Sucursal sucursal) {
+    def delete(TipoSucursal tipoSucursal) {
 
-        if (sucursal == null) {
+        if (tipoSucursal == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        sucursal.delete flush:true
+        tipoSucursal.delete flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'sucursal.label', default: 'Sucursal'), sucursal.id])
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'tipoSucursal.label', default: 'TipoSucursal'), tipoSucursal.id])
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }
@@ -120,11 +111,10 @@ class SucursalController {
     protected void notFound() {
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'sucursal.label', default: 'Sucursal'), params.id])
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'tipoSucursal.label', default: 'TipoSucursal'), params.id])
                 redirect action: "index", method: "GET"
             }
             '*'{ render status: NOT_FOUND }
         }
     }
 }
-

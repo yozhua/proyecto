@@ -1,4 +1,5 @@
-package com.castor.cliente
+package com.castor.empleado
+
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.converters.JSON
@@ -17,100 +18,91 @@ import javax.servlet.http.HttpServletResponse
 
 @Secured('permitAll')
 @Transactional(readOnly = true)
-class SucursalController {
+class DomicilioEmpleadoController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def getAllSucursales(){
-        def sucursales = Sucursal.list()        
-        render sucursales as JSON
-    }
-
-    def busqueda() {
-        render view: '/sucursal/find'
-    }
-
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Sucursal.list(params), model:[sucursalCount: Sucursal.count()]
+        respond DomicilioEmpleado.list(params), model:[domicilioEmpleadoCount: DomicilioEmpleado.count()]
     }
 
-    def show(Sucursal sucursal) {
-        respond sucursal
+    def show(DomicilioEmpleado domicilioEmpleado) {
+        respond domicilioEmpleado
     }
 
     def create() {
-        respond new Sucursal(params)
+        respond new DomicilioEmpleado(params)
     }
 
     @Transactional
-    def save(Sucursal sucursal) {
-        if (sucursal == null) {
+    def save(DomicilioEmpleado domicilioEmpleado) {
+        if (domicilioEmpleado == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (sucursal.hasErrors()) {
+        if (domicilioEmpleado.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond sucursal.errors, view:'create'
+            respond domicilioEmpleado.errors, view:'create'
             return
         }
 
-        sucursal.save flush:true
+        domicilioEmpleado.save flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'sucursal.label', default: 'Sucursal'), sucursal.id])
-                redirect sucursal
+                flash.message = message(code: 'default.created.message', args: [message(code: 'domicilioEmpleado.label', default: 'DomicilioEmpleado'), domicilioEmpleado.id])
+                redirect domicilioEmpleado
             }
-            '*' { respond sucursal, [status: CREATED] }
+            '*' { respond domicilioEmpleado, [status: CREATED] }
         }
     }
 
-    def edit(Sucursal sucursal) {
-        respond sucursal
+    def edit(DomicilioEmpleado domicilioEmpleado) {
+        respond domicilioEmpleado
     }
 
     @Transactional
-    def update(Sucursal sucursal) {
-        if (sucursal == null) {
+    def update(DomicilioEmpleado domicilioEmpleado) {
+        if (domicilioEmpleado == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (sucursal.hasErrors()) {
+        if (domicilioEmpleado.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond sucursal.errors, view:'edit'
+            respond domicilioEmpleado.errors, view:'edit'
             return
         }
 
-        sucursal.save flush:true
+        domicilioEmpleado.save flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'sucursal.label', default: 'Sucursal'), sucursal.id])
-                redirect sucursal
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'domicilioEmpleado.label', default: 'DomicilioEmpleado'), domicilioEmpleado.id])
+                redirect domicilioEmpleado
             }
-            '*'{ respond sucursal, [status: OK] }
+            '*'{ respond domicilioEmpleado, [status: OK] }
         }
     }
 
     @Transactional
-    def delete(Sucursal sucursal) {
+    def delete(DomicilioEmpleado domicilioEmpleado) {
 
-        if (sucursal == null) {
+        if (domicilioEmpleado == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        sucursal.delete flush:true
+        domicilioEmpleado.delete flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'sucursal.label', default: 'Sucursal'), sucursal.id])
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'domicilioEmpleado.label', default: 'DomicilioEmpleado'), domicilioEmpleado.id])
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }
@@ -120,11 +112,10 @@ class SucursalController {
     protected void notFound() {
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'sucursal.label', default: 'Sucursal'), params.id])
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'domicilioEmpleado.label', default: 'DomicilioEmpleado'), params.id])
                 redirect action: "index", method: "GET"
             }
             '*'{ render status: NOT_FOUND }
         }
     }
 }
-

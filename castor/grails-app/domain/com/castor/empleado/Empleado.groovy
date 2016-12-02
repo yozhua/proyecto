@@ -20,7 +20,7 @@ class Empleado {
 
 	static belongsTo = [user: User]
 
-	static hasMany = [	registroHistoricoCliente : RegistroHistoricoCliente, 
+	static hasMany = [	registroHistoricoCliente : RegistroHistoricoCliente,
 						actividad: Actividad,
 						bitacora: Bitacora,
 						registroTiempo: RegistroTiempo, 
@@ -30,14 +30,14 @@ class Empleado {
     	user nullable: false
 		nombre minSize: 4, maxSize: 20
 		apellidoPaterno minSize: 4, maxSize: 20
-		apellidoMaterno minSize: 4, maxSize: 20		
+		apellidoMaterno minSize: 4, maxSize: 20, nullable: true
 		telefono minSize: 7, maxSize: 8
 		nombreContacto minSize: 4, maxSize: 20
 		telefonoContacto minSize: 7, maxSize: 8
 		relacionContacto minSize: 4, maxSize: 25
 		estatus nullable: false
     }
-	
+
 	static mapping = {
 		version false
 	}

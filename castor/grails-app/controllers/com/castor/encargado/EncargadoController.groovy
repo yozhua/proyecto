@@ -27,4 +27,8 @@ class EncargadoController {
         def encargados = Encargado.findAllWhere(autorizacion: true)        				
         render encargados as JSON
     }
+
+    def busqueda() {
+        render view: '/encargado/find'
+    }
 }

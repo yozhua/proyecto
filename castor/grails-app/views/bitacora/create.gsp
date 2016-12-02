@@ -10,20 +10,16 @@
     <head>
         <meta name="layout" content="main" />
         <asset:javascript src="reloj.js"/>
+        <asset:stylesheet  src="select2.min.css" />
+        <asset:javascript  src="select2.min.js" />
         <asset:javascript src="jquery-ui.js"/>     
         <asset:javascript src="jquery-ui.minS.js"/>
-        <g:set var="entityName" value="${message(code: 'bitacora.label', default: 'Bitacora')}" />        
-        <title><g:message code="default.create.label" args="[entityName]" /></title>
+        <title><g:message code="Crear bitácora."/></title>
     </head>
 <body class="sign-in-up">
     <g:set var="username" value="${sec?.username()}" />
     <g:set var="nombreUser" value="${User.findByUsername(username)?.username}" />
     <g:set var="id" value="${User.findByUsername(username)?.id}" />
-    <g:set var="id_parseado" value="${id.toLong()+0}" />
-    
-    
-    
-
     <section>
         <div id="create-bitacora" class="content scaffold-create" role="main">
             <g:if test="${flash.message}">
@@ -35,7 +31,8 @@
                     <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
                     </g:eachError>
                 </ul>
-            </g:hasErrors>
+            </g:hasErrors><br>
+            <h1 align="center"> Bitacora.</h1><br>
             <div class="panel-body panel-body-inputin">            
                 <form role="form" class="form-horizontal">                    
                     <div class="bs-example5">
@@ -103,7 +100,7 @@
                                 <div class="input-group input-group1">                           
                                     <input type="text" class="form-control1" id="searchQuienSolicita" value="" placeholder="Buscar ...">
                                     <input type="hidden" id="quienSolicitaID" name="quienSolicitaID" value="" />
-                                    <span class="input-group-addon">
+                                    <span class="input-group-addon"x>
                                         <i class="fa fa-search"></i>
                                     </span>
                                 </div>
@@ -114,7 +111,8 @@
                             <label class="col-md-2 control-label">Tipo de asistencia:</label>
                             <div class="col-md-3">
                                 <div class="input-group input-group1">                           
-                                    <g:select name="tipoAsistencia"
+                                    <g:select 
+                                        name="tipoAsistencia"
                                         class="form-control1"
                                         noSelection="${['null':'Selecciona']}"
                                         from="${TipoAsistencia.list()}"
@@ -227,8 +225,7 @@
                         </div>
                         <br>
                         <div class="form-group">
-                        <label class="col-md-2 control-label">Tags:</label>
-                        
+                        <label class="col-md-2 control-label">Tags:</label>                        
                             <div class="col-md-8">
                                 <div class="input-group input-group1">                           
                                     <textarea type="text" class="form-control1" placeholder="Buscar ..."></textarea>
@@ -245,15 +242,18 @@
                             </div>                            
                             <div class="clearfix"> </div>
                         </div> 
-                        <div class="center">
-                            <input type="submit" value="Guardar." class="col-md-1 btn-success btn" />    
-                            <input type="submit" value="Cancelar." class="col-md-1 btn-success btn" />    
+                        <div class="row">
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <button class="btn-primary btn">Guardar.</button>
+                                <button class="btn-danger btn">Cancelar.</button>                                    
+                            </div>
                         </div>
                     </div>
                     
                     <br>
                 </form>                
             </div>
+            
             <br>
             <br>
             <br>

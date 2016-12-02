@@ -15,7 +15,9 @@ import org.springframework.security.web.WebAttributes
 
 import javax.servlet.http.HttpServletResponse
 
-@Secured('ROLE_ADMIN,ROLE_ADMINISTRATIVO,ROLE_TECNICO,ROLE_GERENCIA')
+
+@Secured('permitAll')
+
 @Transactional(readOnly = true)
 class EmpleadoController {
 
@@ -31,23 +33,44 @@ class EmpleadoController {
         render usuarioSoporte as JSON
     }
 
+    def busqueda() {
+        render view: '/empleado/find'
+    }
     def show(Empleado empleado) {
         respond empleado
     }
 
     def create() {
         respond new Empleado(params)
-    }    
+    }
 
     @Transactional
     def save(Empleado empleado) {
+        println params as JSON
+        def empleado2 = JSON.parse(params.empleado)
+        def user = User.get(empleado2.user)
+        println user as JSON
+        println empleado as JSON
+
+
+        empleado.user = user
+        empleado.nombre = empleado2.nombre
+        empleado.apellidoPaterno = empleado2.apellidoPaterno
+        empleado.apellidoMaterno = empleado2.apellidoMaterno
+        empleado.telefono = empleado2.telefono
+        empleado.nombreContacto = empleado2.nombreContacto
+        empleado.telefonoContacto = empleado2.telefonoContacto
+        empleado.relacionContacto = empleado2.relacionContacto
+
+        println empleado as JSON
+
         if (empleado == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (empleado.hasErrors()) {
+        if (!empleado.validate()) {
             transactionStatus.setRollbackOnly()
             respond empleado.errors, view:'create'
             return

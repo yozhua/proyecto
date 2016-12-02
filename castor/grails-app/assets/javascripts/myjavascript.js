@@ -245,4 +245,33 @@ function reordenar(){
 		$(this).find('td').eq(0).text(num);
 		num++;
 	});
-}	
+}
+
+function validaRFC(rfc) {
+    var rfcCorrecto;
+    rfcCorrecto = rfc;   
+    if (rfc.length == 13){
+        var rfcValido = '^(([A-Z]|[a-z]|\s){1})(([A-Z]|[a-z]){3})([0-9]{6})((([A-Z]|[a-z]|[0-9]){3}))';
+    } else{
+        var rfcValido = '^(([A-Z]|[a-z]){3})([0-9]{6})((([A-Z]|[a-z]|[0-9]){3}))';
+    }
+    var validRfc = new RegExp(rfcValido);
+    var matchArray = rfcCorrecto.match(validRfc);
+    if (matchArray == null) {
+        alertify.error('RFC incorrecto verifica tus datos.');
+        return false;
+    }
+    else{
+        alertify.success('RFC correcto:' + rfcCorrecto);
+        return true;
+    }    
+}
+
+function validarEmail(email){    
+    email = document.getElementById("email").value; 
+    expresion = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if ( !expresion.test(email) ){
+        alertify.error("El email no es correcto."); 
+        return false;
+    }
+}
