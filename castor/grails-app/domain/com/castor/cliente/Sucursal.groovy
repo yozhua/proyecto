@@ -44,7 +44,7 @@ class Sucursal {
 	
 	static mapping = {
 		version false
-		referencias (type:'blob')
+		referencias (type:'text')
 
 	}
 }

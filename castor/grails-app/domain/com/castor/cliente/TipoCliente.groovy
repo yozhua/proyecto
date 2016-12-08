@@ -8,7 +8,7 @@ class TipoCliente {
 	boolean notificacion	
 
     static constraints = {
-    	nombre minSize: 5, maxSize: 25
+    	nombre minSize: 5, maxSize: 40
 		descripcion minSize: 3, maxSize: 255
 		tiempoRespuesta nullable: false
 		notificacion  nullable: false

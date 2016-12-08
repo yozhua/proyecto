@@ -1,5 +1,4 @@
 package com.castor.bitacora
-import org.apache.commons.validator.routines.EmailValidator 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.converters.JSON
@@ -34,6 +33,11 @@ class BitacoraController {
     def create() {
         respond new Bitacora(params)
     }
+
+    def busqueda() {
+        render view: '/bitacora/find'
+    }
+
 
     @Transactional
     def save(Bitacora bitacora) {

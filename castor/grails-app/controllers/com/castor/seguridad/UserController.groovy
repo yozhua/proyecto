@@ -1,9 +1,11 @@
 package com.castor.seguridad
 import seguridad.UserService
-import org.apache.commons.validator.routines.EmailValidator 
+import org.apache.commons.validator.routines.EmailValidator
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.converters.JSON
+import grails.converters.*
+import groovy.transform.ToString
 import grails.plugin.springsecurity.SpringSecurityUtils
 import org.springframework.security.access.annotation.Secured
 import org.springframework.security.authentication.AccountExpiredException
@@ -21,9 +23,8 @@ import javax.servlet.http.HttpServletResponse
 @Transactional(readOnly = true)
 class UserController {
 
-    def userService 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-    
+ def userService
+    static allowedMethods = [getEmail: "POST", getUser: "POST", save: "POST", update: "PUT", delete: "DELETE"]
     /************* restore pass *********/
     /**
      * Renderea la vista de restablecer contraseña
@@ -106,6 +107,49 @@ class UserController {
         render view: '/restore/change_pass', model:['errors': errors]//rendereo la vista nuevamente con los errores que encuentre
     }
 
+    //Obtener usuario
+    def getUser(){
+      try{
+
+        def usuario = User.findByUsername(params.username)
+
+        if(usuario){
+          response.status = 200
+          render ([disponible: false] as JSON)
+        }else{
+          response.status = 200
+          render ([disponible: true] as JSON)
+        }
+
+
+      }
+      catch(Exception ex){
+        response.status = 500
+        render ([message: "No puede haber datos vacíos en miembro."] as JSON)
+      }
+
+    }
+
+    //Obtener email
+    def getEmail(){
+      try{
+        def email = User.findByEmail(params.email)
+        if(email){
+          response.status = 200
+          render ([disponible: true] as JSON)
+        }else{
+          response.status = 200
+          render ([disponible: false] as JSON)
+        }
+      }
+      catch(Exception ex){
+        response.status = 500
+        render ([message: "No puede haber datos vacíos en miembro."] as JSON)
+      }
+
+    }
+
+
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond User.list(params), model:[userCount: User.count()]
@@ -121,13 +165,22 @@ class UserController {
 
     @Transactional
     def save(User user) {
+
+        def usuario = JSON.parse(params.user)
+        println usuario as JSON
+
+        user.username = usuario.username
+        user.email = usuario.email
+        user.password = usuario.password
+
+        println user as JSON
         if (user == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (user.hasErrors()) {
+        if (!user.validate()) {
             transactionStatus.setRollbackOnly()
             respond user.errors, view:'create'
             return
@@ -142,6 +195,31 @@ class UserController {
             }
             '*' { respond user, [status: CREATED] }
         }
+    }
+
+    def numeroUser(){
+      try{
+        if(User.getAll() == null){
+          render (id:1)
+        }else
+        {
+          render User.last() as JSON
+        }
+      }
+      catch(Exception ex){
+        response.status = 500
+        render ([message: "No puede haber datos vacíos en miembro."] as JSON)
+      }
+    }
+
+    def numeroRole(){
+    try{
+      render Role.findById(params.rol) as JSON
+    }
+    catch(Exception ex){
+      response.status = 500
+      render ([message: "No puede haber datos vacíos en miembro."] as JSON)
+    }
     }
 
     def edit(User user) {

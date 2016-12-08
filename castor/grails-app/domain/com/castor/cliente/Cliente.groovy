@@ -40,6 +40,6 @@ class Cliente {
 
     static mapping = {
 			version false
-			razonSocial (type:'blob')
+			razonSocial (type:'text')
 	}
 }

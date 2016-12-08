@@ -22,15 +22,13 @@
     <asset:stylesheet src="alertify.rtl.min.css"/>   
 
     <asset:javascript src="jquery-2.2.0.min.js"/> 
-    <asset:javascript src="alertify.min.js"/>
-    <asset:javascript src="alertify.js"/>
+
     <asset:javascript src="Chart.js"/>
     <asset:javascript src="jquery.flexisel.js"/>
      <asset:javascript src="myjavascript.js"/>
-    <asset:javascript src="wow.min.js"/>
     <asset:javascript src="jquery.flot.min.js"/>
     <asset:javascript src="uisearch.js"/>
-    <asset:javascript src="classie.js"/>    
+    <asset:javascript src="classie.js"/> 
 
     <asset:javascript src="skycons.js"/>        
     <asset:javascript src="wow.min.js"/>

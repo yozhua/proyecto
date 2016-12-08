@@ -11,7 +11,7 @@ class BootStrap {
     	  Role admin_Role = new Role('ROLE_ADMIN').save()
         Role administrativo_Role = new Role('ROLE_ADMINISTRATIVO').save()
         Role cliente_Role = new Role('ROLE_CLIENTE').save()
-        Role tecnico_Role = new Role('ROLE_TÉCNICO').save()
+        Role tecnico_Role = new Role('ROLE_TECNICO').save()
         Role gerencia_Role = new Role('ROLE_GERENCIA').save()
 
       	

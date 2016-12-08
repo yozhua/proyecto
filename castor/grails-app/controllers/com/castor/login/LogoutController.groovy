@@ -3,9 +3,6 @@ import org.springframework.security.access.annotation.Secured
 import org.springframework.security.web.RedirectStrategy
 import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.converters.JSON
-
-
-
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
