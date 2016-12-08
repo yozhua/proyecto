@@ -1,4 +1,6 @@
 package com.castor.empleado
+import com.castor.seguridad.*
+
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.converters.JSON
@@ -29,7 +31,7 @@ class EmpleadoController {
     }
 
     def getUsuarioSoporte(id){
-        def usuarioSoporte = User.findAllWhere(autorizacion: id)                     
+        def usuarioSoporte = User.findAllWhere(autorizacion: id)
         render usuarioSoporte as JSON
     }
 
@@ -61,6 +63,7 @@ class EmpleadoController {
         empleado.nombreContacto = empleado2.nombreContacto
         empleado.telefonoContacto = empleado2.telefonoContacto
         empleado.relacionContacto = empleado2.relacionContacto
+        empleado.estatus = true
 
         println empleado as JSON
 

@@ -1,8 +1,10 @@
 function Empleado(){}
+function DomicilioEmpleado(){}
 function User(){}
 function UserRole(){}
 
 var empleado = new Empleado();
+var domicilioEmpleado = new DomicilioEmpleado();
 var user = new User();
 var userrole = new UserRole();
 
@@ -102,6 +104,18 @@ function guardar(){
   empleado.relacionContacto = document.getElementsByName("relacionContacto")[0].value;
   console.log(empleado);
 
+  domicilioEmpleado.calle = document.getElementsByName("calle")[0].value;
+  domicilioEmpleado.numeroExterior =  document.getElementsByName("numeroExterior")[0].value;
+  domicilioEmpleado.numeroInterior =  document.getElementsByName("numeroInterior")[0].value;
+  domicilioEmpleado.pais =  document.getElementsByName("pais")[0].value;
+  domicilioEmpleado.estado =  document.getElementsByName("estado")[0].value;
+  domicilioEmpleado.municipio =  document.getElementsByName("municipio")[0].value;
+  domicilioEmpleado.ciudad =  document.getElementsByName("ciudad")[0].value;
+  domicilioEmpleado.colonia =  document.getElementsByName("colonia")[0].value;
+  domicilioEmpleado.codigoPostal =  document.getElementsByName("codigoPostal")[0].value;
+  domicilioEmpleado.referencias =  document.getElementsByName("referencias")[0].value;
+  console.log(domicilioEmpleado);
+
   userrole.role = document.getElementsByName("role")[0].value;
   console.log(userrole);
 
@@ -124,6 +138,7 @@ function empleadoG(){
         console.log(userrole);
         rol();
         guardarEmpleado();
+        domicilioSave();
 
       },
 
@@ -246,4 +261,38 @@ function guardarUserRole(){
         return false;
       }
   });
+}
+
+function domicilioSave(){
+  var formData = new FormData();
+  console.log(domicilioEmpleado);
+
+  formData.append('domicilioEmpleado',JSON.stringify(domicilioEmpleado));
+  uri =CONTEXT_ROOT+"/domicilioEmpleado/save"
+  $.ajax({
+      url: uri,
+      data: formData,
+      processData: false,
+      contentType: false,
+      type: 'POST',
+      success: function () {
+        //console.log(data);
+        console.log("datos guardados");
+      },
+
+      error: function(data,textStatus,errorThrown){
+        if(data.responseJSON.message===undefined){
+          console.error("Hubo un error.");
+        }else{
+          console.error(data.responseJSON.message);
+        }
+        return false;
+      }
+  });
+}
+function cancelar(){
+  alertify.confirm('CONFIRME', '¿SEGURO DE QUERER SALIR ?', function(){ location.href=CONTEXT_ROOT+"/" }
+                , function(){ alertify.success('CONTINUE')})
+                                      .setting({'closable':false,
+                                                'labels':{ok:'¡SI!', cancel:'¡NO!'}});
 }
