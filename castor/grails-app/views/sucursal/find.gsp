@@ -3,49 +3,26 @@
 <%@ page import="com.castor.seguridad.*" %>
 <%@ page import="com.castor.cliente.Cliente" %>
 <%@ page import="com.castor.cliente.Sucursal" %>
+<%@ page import="com.castor.cliente.TipoSucursal" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'bitacora.label', default: 'Bitacora')}" />        
-        <title><g:message code="Buscar cliente." /></title>
+        <title><g:message code="Buscar sucursal." /></title>
     </head>
 <body class="sign-in-up">
-    <g:set var="username" value="${sec?.username()}" />
-    <g:set var="nombreUser" value="${User.findByUsername(username)?.username}" />
-    <g:set var="id" value="${User.findByUsername(username)?.id}" />
-    <g:set var="id_parseado" value="${id.toLong()}" />
-    <section>
-        <div id="create-bitacora" class="content scaffold-create" role="main">
-            <g:if test="${flash.message}">
-                <div class="message" role="status">${flash.message}</div>
-            </g:if>
-            <g:hasErrors bean="${this.bitacora}">
-                <ul class="errors" role="alert">
-                    <g:eachError bean="${this.bitacora}" var="error">
-                    <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
-                    </g:eachError>
-                </ul>
-            </g:hasErrors><br>
-            <h2 align="center"> Busqueda de clientes.</h2>
+    <section>    
+            <h2 align="center"> Busqueda de sucursales.</h2>
             <div class="panel-body panel-body-inputin">            
-                <form role="form" class="form-horizontal">                    
+                <g:form resource="${this.sucursal}" action='busquedaSucursal' class="form-horizontal">
                     <div class="bs-example5">
                     <legend><h4>Criterios de busqueda.</h4></legend>                              
                         <div class="form-group">
-                            <label class="col-md-2 control-label">Folio:</label>
-                            <div class="col-md-3">
-                                <div class="input-group input-group1">
-                                    <input type="text" class="form-control1" id="searchNombreComercial" value="" placeholder="Buscar ...">
-                                    <span class="input-group-addon">
-                                        <i class="fa fa-search"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <label class="col-md-2 control-label">Cliente:</label>
+                            <label class="col-md-2 control-label"><b>Nombre empresa:</b></label>
                             <div class="col-md-3">
                                 <div class="input-group input-group1">                           
-                                    <input type="text" class="form-control1" id="searchRFC" value="" placeholder="Buscar ...">
+                                    <input type="text" class="form-control1" id="cliente" value="" placeholder="Buscar ...">
                                     <span class="input-group-addon">
                                         <i class="fa fa-search"></i>
                                     </span>    
@@ -54,85 +31,60 @@
                             <div class="clearfix"> </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-2 control-label">Agente de soporte:</label>
+                            <label class="col-md-2 control-label"><b>Nombre sucursal:</b></label>
                             <div class="col-md-3">
                                 <div class="input-group input-group1">                           
-                                    <g:select name="tipoCliente"
-                                        class="form-control1"
-                                        noSelection="${['null':'Selecciona']}"
-                                        from="${TipoCliente.list()}"
-                                        value="${com?.castor?.cliente?.tipoCliente?.nombre}"
-                                        optionValue="nombre"
-                                        optionKey="id" />
-                                </div>
-                            </div>
-                            <label class="col-md-2 control-label">Estatus:</label>
-                            <div class="col-md-3">
-                                <div class="input-group input-group1">                           
-                                    <select name="cliente"
-                                        class="form-control1">
-                                        <option value="null">Selecciona</option>
-                                        <option value="true">Activo</option>
-                                        <option value="true">Activo</option>
-                                        <option value="true">Activo</option>
-                                        <option value="true">Activo</option>
-                                        <option value="false">Desactivo</option>                                        
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="clearfix"> </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">Apellido paterno:</label>
-                            <div class="col-md-3">
-                                <div class="input-group input-group1">                           
-                                    <input type="text" class="form-control1" id="searchApellidoPaterno" value="" placeholder="Buscar ...">
-                                    <span class="input-group-addon">
-                                        <i class="fa fa-search"></i>
-                                    </span>    
-                                </div>
-                            </div>
-                            <label class="col-md-2 control-label">Apellido materno:</label>
-                            <div class="col-md-3">
-                                <div class="input-group input-group1">                           
-                                    <input type="text" class="form-control1" id="searchApellidoMaterno" value="" placeholder="Buscar ...">
-                                    <span class="input-group-addon"x>
-                                        <i class="fa fa-search"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="clearfix"> </div>
-                        </div>                        
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">Nombre(s):</label>
-                            <div class="col-md-3">
-                                <div class="input-group input-group1">                           
-                                    <input type="text" class="form-control1" id="searchNombre" value="" placeholder="Buscar ...">
+                                    <input type="text" class="form-control1" id="nombre" value="" placeholder="Buscar ...">
                                     <span class="input-group-addon">
                                         <i class="fa fa-search"></i>
                                     </span>    
                                 </div>
                             </div>
                             
+                            <label class="col-md-2 control-label"><b>Tipo sucursal:</b></label>
+                            <div class="col-md-3">
+                                <div class="input-group input-group1">                           
+                                    <g:select name="tipoSucursal"
+                                        class="form-control1"
+                                        noSelection="${['':'Selecciona']}"
+                                        from="${TipoSucursal.list()}"
+                                        value="${com?.castor?.cliente?.tipoSucursal?.nombre}"
+                                        optionValue="nombre"
+                                        optionKey="id" />
+                                </div>
+                            </div>                        
+                            <div class="clearfix"> </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-2 control-label">Razón social:: </label>
-                            <div class="col-md-8">
+                            <label class="col-md-2 control-label"><b>Telefono:</b></label>
+                            <div class="col-md-3">
                                 <div class="input-group input-group1">                           
-                                    <textarea placeholder="describe la razón social..."  cols="100" rows="2" required=""></textarea>
+                                    <input type="text" class="form-control1" id="telefono" value="" placeholder="Buscar ...">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-search"></i>
+                                    </span>    
                                 </div>
-                            </div>                            
+                            </div>
+                            <label class="col-md-2 control-label"><b><b>Estatus:</b></b></label>
+                            <div class="col-md-3">
+                                <div class="input-group input-group1">
+                                    <select class="form-control1" name="estatus" id="estatus" >
+                                        <option value="TRUE">Activos</option>
+                                        <option value="FALSE">Desactivados</option>
+                                    </select>                                   
+                                </div>
+                            </div>
                             <div class="clearfix"> </div>
-                        </div> 
+                        </div>                                                
                         <div class="row">
                             <div class="col-sm-8 col-sm-offset-2">
-                                <button class="btn-primary btn">Guardar.</button>
-                                <button class="btn-danger btn">Cancelar.</button>                                    
+                                <button class="btn-primary btn" type="submit">Buscar.</button>
+                                <button class="btn-danger btn"  type="button" onclick=cancelar()>Cancelar</button>
                             </div>
                         </div>
                     <br>
                     </div>                                        
-                </form>                
+                </g:form>                
             </div>     
         </div>
     </section>

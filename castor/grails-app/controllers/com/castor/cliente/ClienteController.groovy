@@ -16,22 +16,46 @@ import org.springframework.security.web.WebAttributes
 import javax.servlet.http.HttpServletResponse
 import grails.gorm.*
 
-@Secured('permitAll')
+@Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
 @Transactional(readOnly = true)
 class ClienteController {    
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA','ROLE_TECNICO'])
     def getAllClientes(){
         def clientes = Cliente.list()
         render clientes as JSON
     }
 
+    
+    /**
+    *Envía vista con formulario del riesgo a editar
+    */@Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
+    @Transactional
+    def editRiesgo(){
+        if (params == null) {
+            notFound()
+            return
+        } 
+        def riesgo = Cliente.get(params.id)
+        if(riesgo){
+            response.status = 200
+            [riesgo:riesgo,create:false]
+        }
+        else{
+            response.status = 404
+            render ([message: "No se encontró el cliente"] as JSON)
+        }
+    }
+
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
     def busqueda() {
         render view: '/cliente/find'
     }   
-        
-    def busquedaCliente = {
+    
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])    
+    def busquedaCliente () {
         String nombreComercial = params.nombreComercial
         String rfc = params.rfc
         //TipoCliente tipoCliente = params.tipoCliente //checar
@@ -41,7 +65,8 @@ class ClienteController {
         String nombrePersona = params.nombrePersona
         String estatus = params.estatus
         String razonSocial = params.razonSocial
-        
+
+        println estatus     
         def query = Cliente.where {
             nombreComercial =~nombreComercial ||
             rfc =~ rfc ||
@@ -51,32 +76,43 @@ class ClienteController {
             apellidoMaterno =~ apellidoMaterno ||
             nombrePersona =~ nombrePersona ||
             estatus == estatus ||
-            razonSocial =~ razonSocial 
+            razonSocial =~ razonSocial                        
         }
-        def listaClientes = query.findAll()
+        def listaClientes = query.findAll()        
         //listaCliente.listOrderByNombreComercial()
-        println listaClientes as JSON              
-        println estatus     
-        render(view:'searchResults', model:['listaClientes':listaClientes])
+        println listaClientes as JSON                      
+        render(view:'results', model:['listaClientes':listaClientes])
     }    
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Cliente.list(params), model:[clienteCount: Cliente.count()]
     }
 
-    def show(Cliente cliente) {
-        respond cliente
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
+    def show() {
+        
+        def cliente = Cliente.findById(params.id)
+        def tipoPersona = TipoPersona.find(cliente.tipoPersona)
+        def tipoCliente = TipoCliente.find(cliente.tipoCliente)
+                
+        params.cliente=cliente
+        params.tipoPersona = tipoPersona
+        params.tipoCliente = tipoCliente
+        
+        respond params
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
     def create() {
         respond new Cliente(params)
     }
 
-
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
     @Transactional
     def save(Cliente cliente) {
-        println params as JSON
+        println params as JSON        
         def clienteJson = params
         println cliente as JSON
 
@@ -97,11 +133,12 @@ class ClienteController {
 
         if (cliente == null) {
             transactionStatus.setRollbackOnly()
+            //respond cliente.errors, view:'create'//Quitar estal linea si hay error
             notFound()
-            return
+            return            
         }
 
-        if (cliente.hasErrors()) {
+        if (!cliente.validate()) {
             transactionStatus.setRollbackOnly()
             respond cliente.errors, view:'create'
             return
@@ -113,15 +150,18 @@ class ClienteController {
             form multipartForm {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'cliente.label', default: 'Cliente'), cliente.id])
                 redirect cliente
+                //redirect action:"show" //redirecciono a show descomentar linea superior
             }
             '*' { respond cliente, [status: CREATED] }
         }
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
     def edit(Cliente cliente) {
         respond cliente
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
     @Transactional
     def update(Cliente cliente) {
         if (cliente == null) {
@@ -147,6 +187,7 @@ class ClienteController {
         }
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
     @Transactional
     def delete(Cliente cliente) {
 
@@ -167,6 +208,7 @@ class ClienteController {
         }
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
     protected void notFound() {
         request.withFormat {
             form multipartForm {

@@ -1,16 +1,25 @@
 <html>
 <head>
-    <meta name="layout" content="main_not_auth" />
+    <meta name="layout" content="main" />
     <title>Cambia tu contraseña</title>
 </head>
 <body  class="sign-in-up">
     <section>
         <div>
-            <g:if test="${errors}">
-                <ul class="errors" role="alert">    
-                    <g:each in="${errors}" var="error">
+             <g:if test="${errors}">
+                <ul class="errors" role="alert">
+                    <g:each  in="${errors}" var="error">
                         <li class="error">
-                            <g:message code="${error}" default="Error al procesar los datos"/>
+                        <g:javascript>
+                            $( document ).ready(
+                                function() {
+                                    var delay = alertify.get('notifier','delay');
+                                    alertify.set('notifier','delay', 13);
+                                    alertify.error("${error}");
+                                    alertify.set('notifier','delay', delay);
+                                }
+                            );
+                        </g:javascript>
                         </li>
                     </g:each>
                 </ul>
@@ -37,7 +46,7 @@
                                 </div>
                                 <g:hiddenField name="token" value="${params.token}"/>                
                                 <div class="log-input">                             
-                                    <div class="log-input-left">                                                                                            
+                                    <div class="log-input-left">
                                         <input type="submit" id="submit" value="Cambiar" default="Cambiar" />
                                     </div><div class="clearfix"> </div>                                 
                                 </div>

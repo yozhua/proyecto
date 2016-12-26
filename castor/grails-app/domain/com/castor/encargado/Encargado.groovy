@@ -20,10 +20,10 @@ class Encargado {
 
     static constraints = {
     	user nullable: false
-		sucursal nullable: true		
+		sucursal nullable: false		
 		nombre minSize: 4, maxSize: 20
 		apellidoPaterno minSize: 4, maxSize: 20
-		apellidoMaterno minSize: 4, maxSize: 20		
+		apellidoMaterno nullable: true				
 		telefono minSize: 7, maxSize: 10
 		estatus nullable: false
 		autorizacion nullable: false

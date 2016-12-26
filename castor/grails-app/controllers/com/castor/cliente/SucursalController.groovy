@@ -1,4 +1,5 @@
 package com.castor.cliente
+import com.castor.cliente.*
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.converters.JSON
@@ -15,43 +16,101 @@ import org.springframework.security.web.WebAttributes
 
 import javax.servlet.http.HttpServletResponse
 
-@Secured('permitAll')
 @Transactional(readOnly = true)
 class SucursalController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE", create: "GET"]
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA','ROLE_TECNICO'])
     def getAllSucursales(){
         def sucursales = Sucursal.list()        
         render sucursales as JSON
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
     def busqueda() {
         render view: '/sucursal/find'
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])    
+    def busquedaSucursal () {
+        //Cliente cliente = params.cliente
+        String nombre = params.nombre
+        //TipoSucursal tipoSucursal = params.tipoSucursal //checar        
+        String telefono = params.telefono
+        String estatus = params.estatus
+                
+        println nombre
+        println telefono
+        println estatus
+
+        def query = Sucursal.where {
+            //cliente == cliente ||            
+            nombre =~nombre ||
+            //tipoSucursal == tipoSucursal ||            
+            telefono =~ telefono ||
+            estatus == estatus             
+        }        
+        def listaSucursales = query.findAll()        
+        
+        println estatus     
+        //listaCliente.listOrderByNombreComercial()
+        println listaSucursales as JSON                      
+        render(view:'results', model:['listaSucursales':listaSucursales])
+    }   
+
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Sucursal.list(params), model:[sucursalCount: Sucursal.count()]
     }
 
-    def show(Sucursal sucursal) {
-        respond sucursal
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
+    def show() {
+        def sucursal = Sucursal.findById(params.id)
+        def tipoSucursal = TipoSucursal.find(sucursal.tipoSucursal)
+                        
+        params.sucursal = sucursal
+        params.tipoSucursal = tipoSucursal        
+        respond params
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
     def create() {
         respond new Sucursal(params)
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
     @Transactional
     def save(Sucursal sucursal) {
+        println params as JSON
+        def sucursalJson = params        
+        println sucursal as JSON
+
+        sucursal.cliente = Cliente.findById(sucursalJson.cliente)
+        sucursal.nombre = sucursalJson.nombre        
+        sucursal.tipoSucursal = TipoSucursal.findById(sucursalJson.tipoSucursal)
+        sucursal.telefono = sucursalJson.telefono
+        sucursal.calle = sucursalJson.calle
+        sucursal.numeroExterior = sucursalJson.numeroExterior
+        sucursal.numeroInterior = sucursalJson.numeroInterior
+        sucursal.colonia = sucursalJson.colonia
+        sucursal.ciudad = sucursalJson.ciudad
+        sucursal.municipio = sucursalJson.municipio
+        sucursal.estado = sucursalJson.estado
+        sucursal.pais = sucursalJson.pais
+        sucursal.codigoPostal = sucursalJson.codigoPostal.toInteger()
+        sucursal.estatus = true
+
+        println sucursal as JSON
+
         if (sucursal == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (sucursal.hasErrors()) {
+        if (!sucursal.validate()) {
             transactionStatus.setRollbackOnly()
             respond sucursal.errors, view:'create'
             return
@@ -68,10 +127,12 @@ class SucursalController {
         }
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
     def edit(Sucursal sucursal) {
         respond sucursal
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
     @Transactional
     def update(Sucursal sucursal) {
         if (sucursal == null) {
@@ -97,6 +158,7 @@ class SucursalController {
         }
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
     @Transactional
     def delete(Sucursal sucursal) {
 
@@ -117,6 +179,7 @@ class SucursalController {
         }
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
     protected void notFound() {
         request.withFormat {
             form multipartForm {

@@ -24,7 +24,7 @@ class Cliente {
 						bitacora : Bitacora]
 
     static constraints = {    	
-    	nombreComercial minSize: 5, maxSize: 100
+    	nombreComercial minSize: 2, maxSize: 100
 		tipoPersona nullable: false
  		tipoCliente nullable: false
 		nombrePersona nullable: true

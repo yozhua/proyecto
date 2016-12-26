@@ -1,7 +1,6 @@
 function validarPassword(){ 
 	var password = document.getElementById("password").value;
 	var passwordConfirm = document.getElementById("passwordConfirm").value;
-
 	var espaciosEnBlanco = false;
 	var contador = 0;
  
@@ -17,12 +16,13 @@ function validarPassword(){
 	}
 
 	if (password.length == 0 || passwordConfirm.length == 0) {		
-	  	alertify.error("Los campos de la password no pueden quedar vacios.");
+	  	alertify.error("Los campos de la password no pueden quedar vacios.");        
 	  	return false;
 	}
 
 	if (password != passwordConfirm) {		
 	  	alertify.error("Las contraseñas deben coincidir.");
+        document.getElementById("password").focus();
 	  	return false;
 	} else {
 	  	alertify.success("Ahora puedes iniciar sesion.");
@@ -34,7 +34,7 @@ function validarEmail(){
 	email = document.getElementById("email").value;	
 	expresion = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     if ( !expresion.test(email) ){
-		alertify.error("El email no es correcto.");	
+		alertify.error("El email no es correcto.");	        
 	  	return false;
 	}
 }
@@ -56,130 +56,6 @@ function obtener_fecha() {
 function mostrar_Fecha() { 
    document.write(fecha_actual.value = obtener_fecha());
 } 
-
-
-//Función que autocompleta los posibles resultados para la búsqueda de un ciente
-$(document).ready(function() {
-    $.ajax({
-        type: "GET",
-        url: "/cliente/getAllClientes",
-        dataType: "json",
-        success : function(response) {
-            //Creo un mapa con el nombre de la empresa y su ID
-            var data =
-                $.map(response, function(item){
-                  console.log("id: " + item.id);
-                  console.log("name: " + item.nombreComercial);
-                    return{
-                        id: item.id,
-                        value: item.nombreComercial
-                    }
-                });
-            $("#searchCliente").autocomplete({
-                source: data,
-                select: function (event, ui){
-                console.log("ID seleccionado:" + ui.item.id);
-                    console.log("Nombre:" + ui.item.value);
-                    $('#clienteID').val(ui.item.id);
-                }
-            });
-        }
-    }); 
-});
-
-//Función que autocompleta los posibles resultados para la búsqueda de una sucursal
-$(document).ready(function() {
-    $.ajax({
-        type: "GET",
-        url: "/sucursal/getAllSucursales",
-        dataType: "json",
-        success : function(response) {
-            //Creo un mapa con el nombre de la empresa y su ID
-            var data =
-                $.map(response, function(item){
-                  console.log("id: " + item.id);
-                  console.log("name: " + item.nombre);
-                    return{
-                        id: item.id,
-                        value: item.nombre
-                    }
-                }); 
-            $("#searchSucursal").autocomplete({
-                source: data,
-                select: function (event, ui){
-                    console.log("ID seleccionado:" + ui.item.id);
-                    console.log("Nombre:" + ui.item.value);
-                    $('#sucursalID').val(ui.item.id);
-                }
-            }); 
-        }
-    }); 
-});
-
-//Función que autocompleta los posibles resultados para la búsqueda de un encargado con autorizacion
-$(document).ready(function() {
-    $.ajax({
-        type: "GET",
-        url: "/encargado/getAllQuienAutoriza",
-        dataType: "json",
-        success : function(response) {
-            //Creo un mapa con el nombre de la empresa y su ID
-            var data =
-                $.map(response, function(item){
-                  console.log("ID: " + item.id);
-                  console.log("nombre: " + item.nombre);
-                  console.log("apMaterno: " + item.apellidoMaterno);
-                  console.log("apPaterno: " + item.apellidoPaterno);
-                  console.log("completo: " + item.apellidoPaterno+" "+item.apellidoMaterno +" "+item.nombre);
-                    return{
-                        id: item.id,
-                        value: item.apellidoPaterno +" "+ item.apellidoMaterno +" "+ item.nombre
-                    }
-                }); 
-            $("#searchQuienAutoriza").autocomplete({
-                source: data,
-                select: function (event, ui){
-                    console.log("ID seleccionado:" + ui.item.id);
-                    console.log("Nombre:" + ui.item.value);
-                    $('#quienAutorizaID').val(ui.item.id);
-                }
-            }); 
-        }
-    }); 
-});
-
-
-//Función que autocompleta los posibles resultados para la búsqueda de un encargado sin autorizacion
-$(document).ready(function() {
-    $.ajax({
-        type: "GET",
-        url: "/encargado/getAllEncargado",
-        dataType: "json",
-        success : function(response) {
-            //Creo un mapa con el nombre de la empresa y su ID
-            var data =
-                $.map(response, function(item){                
-                  console.log("ID: " + item.id);
-                  console.log("nombre: " + item.nombre);
-                  console.log("apMaterno: " + item.apellidoMaterno);
-                  console.log("apPaterno: " + item.apellidoPaterno);
-                  console.log("completo: " + item.apellidoPaterno+" "+item.apellidoMaterno +" "+item.nombre);
-                    return{
-                        id: item.id,
-                        value: item.apellidoPaterno +" "+ item.apellidoMaterno +" "+ item.nombre
-                    }
-                }); 
-            $("#searchQuienSolicita").autocomplete({
-                source: data,
-                select: function (event, ui){
-                    console.log("ID seleccionado:" + ui.item.id);
-                    console.log("Nombre:" + ui.item.value);
-                    $('#quienSolicitaID').val(ui.item.id);
-                }
-            }); 
-        }
-    }); 
-});
 
 function validarTexto(){
 	var nombre_actividad = document.getElementById("nombre_actividad").value;	
@@ -209,7 +85,7 @@ var cont=0;
 var id_fila_selected=[];
 	
 function agregar(){
-	nombre_actividad = document.getElementById("nombre_actividad").value;			
+	nombre_actividad = document.getElementById("nombre_actividad").value;			 
 	username = document.getElementById("username").value;					
 	cont++;
 	var fila='<tr class="selected" id="fila'+cont+
@@ -267,11 +143,239 @@ function validaRFC(rfc) {
     }    
 }
 
-function validarEmail(email){    
-    email = document.getElementById("email").value; 
-    expresion = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+function validaTelefonoFijo(telefonoFijo) {
+    var numeroTelefono;
+    numeroTelefono= telefonoFijo;
+  	var expresionRegular1=/^([0-9]+){7}$/;//<--- con esto vamos a validar el numero
+  	var expresionRegular2=/\s/;//<--- con esto vamos a validar que no tenga espacios en blanco
+ 
+  	if(numeroTelefono=='')
+     	alertify.error('Campo es obligatorio.');
+  	else if(expresionRegular2.test(numeroTelefono))
+    	alertify.error('Error: el telefono fijo no debe tener espacios en blanco.');
+    else if(!expresionRegular1.test(numeroTelefono))
+        alertify.error('Error: el telefono fijo debe se compone de 7 números sin caracteres.');
+    else
+    	alertify.success("El número es correcto.");	
+}
+
+function validaTelefonoMovil(telefonoMovil) {
+    var numeroTelefono;
+    numeroTelefono= telefonoMovil;
+  	var expresionRegular1=/^([0-9]+){10}$/;//<--- con esto vamos a validar el numero
+  	var expresionRegular2=/\s/;//<--- con esto vamos a validar que no tenga espacios en blanco 
+  	if(numeroTelefono=='')
+     	alertify.error('Campo es obligatorio.');
+  	else if(expresionRegular2.test(numeroTelefono))
+      alertify.error('Error: el telefono movil no debe tener espacios en blanco.');
+    else if(!expresionRegular1.test(numeroTelefono))
+        alertify.error('Error: el telefono movil debe se compone de 10 números sin caracteres.');
+    else
+    	alertify.success("El número es correcto.");	
+}
+
+function validarEmailCliente(correo){ 	
+	var email = correo;
+	expresion = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     if ( !expresion.test(email) ){
+		alertify.error("El email no es correcto.");	
+	  	return false;
+	}
+	else{
+		alertify.success("El email es correcto.");	
+	}
+}
+
+function validarCodigoPostal(codigoPostal) {
+    var codigoPostalValido;
+    codigoPostalValido= codigoPostal;
+    var expresionRegular1=/^([0-9]+){5}$/;//<--- con esto vamos a validar el numero
+    var expresionRegular2=/\s/;//<--- con esto vamos a validar que no tenga espacios en blanco 
+    if(codigoPostalValido==''){
+        alertify.error('Campo es obligatorio.');
+    }
+    else if(expresionRegular2.test(codigoPostalValido)){
+      alertify.error('Error: el codigo postal no debe tener espacios en blanco.');
+    }
+    else if(!expresionRegular1.test(codigoPostalValido)){
+        alertify.error('Error: el codigo postal se compone de 5 números sin caracteres.');
+    }
+    else{
+        alertify.success("El codigo postal  es correcto."); 
+    }
+}
+
+function validaTelefonoEncargado(telefono) {
+    var numeroTelefono;
+    numeroTelefono= telefono;
+    var expresionRegular1=/^([0-9]+){7,10}$/;//<--- con esto vamos a validar el numero
+    
+    var expresionRegular2=/\s/;//<--- con esto vamos a validar que no tenga espacios en blanco
+ 
+    if(numeroTelefono=='')
+        alertify.error('Campo es obligatorio.');
+    else if(expresionRegular2.test(numeroTelefono))
+        alertify.error('Error: el telefono fijo no debe tener espacios en blanco.');
+    else if(!expresionRegular1.test(numeroTelefono))
+        alertify.error('Error: el telefono tiene un minimo de 7 y un maximo de 10 numeros sin caracteres.');    
+    else
+        alertify.success("El número es correcto."); 
+}
+
+function validarCliente(){
+    var rfc = document.getElementById("rfc").value;    
+    var rfcCorrecto;
+    rfcCorrecto = rfc;   
+    if (rfc.length == 13){
+        var rfcValido = '^(([A-Z]|[a-z]|\s){1})(([A-Z]|[a-z]){3})([0-9]{6})((([A-Z]|[a-z]|[0-9]){3}))';
+    } else{
+        var rfcValido = '^(([A-Z]|[a-z]){3})([0-9]{6})((([A-Z]|[a-z]|[0-9]){3}))';
+    }
+    var validRfc = new RegExp(rfcValido);
+    var matchArray = rfcCorrecto.match(validRfc);
+    if (matchArray == null) {
+        alertify.error('RFC incorrecto verifica tus datos.');
+        return false;
+    }      
+
+    var email = document.getElementById("email").value;
+    var emailCorrecto;
+    emailCorrecto = email;
+    expresion = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if (!expresion.test(emailCorrecto) ){
+		alertify.error("El email no es correcto.");	
+	  	return false;
+	}
+
+    var numeroTelefonoFijo = document.getElementById("telefonofijo").value;
+    var numeroTelefonoFijoCorrecto;
+    numeroTelefonoFijoCorrecto  = numeroTelefonoFijo;
+    var expresionRegular1=/^([0-9]+){7}$/;//<--- con esto vamos a validar el numero
+    var expresionRegular2=/\s/;//<--- con esto vamos a validar que no tenga espacios en blanco
+ 
+    if(numeroTelefonoFijoCorrecto==''){
+        alertify.error('Campo es obligatorio.');
+        return false        
+    }
+    else if(expresionRegular2.test(numeroTelefonoFijoCorrecto)){
+        alertify.error('Error: el telefono fijo no debe tener espacios en blanco.');
+        return false        
+    }
+    else if(!expresionRegular1.test(numeroTelefonoFijoCorrecto)){        
+        alertify.error('Error: el telefono fijo debe se compone de 7 números sin caracteres.');      
+        return false
+    }
+
+    var numeroTelefonoMovil = document.getElementById("telefonoCelular").value;
+    var numeroTelefonoMovilCorrecto;
+    numeroTelefonoMovilCorrecto = numeroTelefonoMovil;
+    var expresionRegular3=/^([0-9]+){10}$/;//<--- con esto vamos a validar el numero
+    var expresionRegular4=/\s/;//<--- con esto vamos a validar que no tenga espacios en blanco 
+    if(numeroTelefonoMovil==''){
+        alertify.error('Campo es obligatorio.');
+        return false        
+    }
+    else if(expresionRegular4.test(numeroTelefonoMovilCorrecto)){
+        alertify.error('Error: el telefono movil no debe tener espacios en blanco.');
+        return false        
+    }
+    else if(!expresionRegular3.test(numeroTelefonoMovilCorrecto)){
+        alertify.error('Error: el telefono movil debe se compone de 10 números sin caracteres.');
+        return false        
+    }
+        
+}
+
+function validarSucursal(){
+    var codigoPostalValido = document.getElementById("codigoPostal").value;
+    var expresionRegular1=/^([0-9]+){5}$/;//<--- con esto vamos a validar el numero
+    var expresionRegular2=/\s/;//<--- con esto vamos a validar que no tenga espacios en blanco 
+    if(codigoPostalValido==''){
+        alertify.error('Campo es obligatorio.');
+        return false
+    }
+    else if(expresionRegular2.test(codigoPostalValido)){ 
+        alertify.error('Error: el codigo postal no debe tener espacios en blanco.');
+        return false
+    }
+    else if(!expresionRegular1.test(codigoPostalValido)){
+        alertify.error('Error: el codigo postal se compone de 5 números sin caracteres.');
+        return false
+    }
+
+    var numeroTelefonoFijo = document.getElementById("telefono").value;
+    var expresionRegular1=/^([0-9]+){7}$/;//<--- con esto vamos a validar el numero
+    var expresionRegular2=/\s/;//<--- con esto vamos a validar que no tenga espacios en blanco
+ 
+    if(numeroTelefonoFijo==''){        
+        alertify.error('Campo es obligatorio.');
+        return false
+    }
+    else if(expresionRegular2.test(numeroTelefonoFijo)){
+        alertify.error('Error: el telefono fijo no debe tener espacios en blanco.');
+        return false        
+    }
+    else if(!expresionRegular1.test(numeroTelefonoFijo)){
+        alertify.error('Error: el telefono fijo debe se compone de 7 números sin caracteres.');      
+        return false        
+    }
+}
+
+function validarEncargado(){
+    var numeroTelefono = document.getElementById("telefono").value;
+    var expresionRegular1=/^([0-9]+){7}$/;//<--- con esto vamos a validar el numero
+    var expresionRegular2=/\s/;//<--- con esto vamos a validar que no tenga espacios en blanco
+ 
+    if(numeroTelefono==''){        
+        alertify.error('Campo es obligatorio.');
+        return false
+    }
+    else if(expresionRegular2.test(numeroTelefono)){
+        alertify.error('Error: el telefono fijo no debe tener espacios en blanco.');
+        return false        
+    }
+    else if(!expresionRegular1.test(numeroTelefono)){
+        alertify.error('Error: el telefono fijo debe se compone de 7 números sin caracteres.');      
+        return false        
+    }
+
+    var email = document.getElementById("email").value;
+    var emailCorrecto;
+    emailCorrecto = email;
+    expresion = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if (!expresion.test(emailCorrecto) ){
         alertify.error("El email no es correcto."); 
         return false;
     }
+}
+
+/*
+Función que recibe id de riesgo y muestra modal con datos obtenidos del servidor
+*/
+function showModalRiesgo(idRiesgo){
+    var formData = new FormData();
+    var uri=CONTEXT_ROOT+"/proyecto/createRiesgo";
+    if(idRiesgo!==undefined){
+      formData.append('idRiesgo',idRiesgo);
+      uri=CONTEXT_ROOT+"/cliente/edit";
+    }
+    $.ajax({
+        url: uri,
+        data: formData,
+        processData: false,
+        contentType: false,
+        type: 'POST',        
+        success: function (data,textStatus) {
+            $("#formRiesgo").html(data);
+            $("#modalRiesgo").modal('show');
+        },
+        error: function(XMLHttpRequest,textStatus,errorThrown){
+            if(idRiesgo!==undefined){
+              alertify.error("Ocurrió un error durante la actualización de riesgo");
+            }else{
+              alertify.error("Ocurrió un error durante la creación de riesgo");
+            }
+        }
+    });
 }

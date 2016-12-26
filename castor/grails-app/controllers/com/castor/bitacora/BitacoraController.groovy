@@ -15,30 +15,33 @@ import org.springframework.security.web.WebAttributes
 
 import javax.servlet.http.HttpServletResponse
 
-@Secured('permitAll')
+
 @Transactional(readOnly = true)
 class BitacoraController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA','ROLE_TECNICO'])
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Bitacora.list(params), model:[bitacoraCount: Bitacora.count()]
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA','ROLE_TECNICO'])
     def show(Bitacora bitacora) {
         respond bitacora
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA','ROLE_TECNICO'])
     def create() {
         respond new Bitacora(params)
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA','ROLE_TECNICO'])
     def busqueda() {
         render view: '/bitacora/find'
     }
 
-
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA','ROLE_TECNICO'])
     @Transactional
     def save(Bitacora bitacora) {
         if (bitacora == null) {
@@ -64,6 +67,7 @@ class BitacoraController {
         }
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA','ROLE_TECNICO'])
     def edit(Bitacora bitacora) {
         respond bitacora
     }
@@ -93,6 +97,7 @@ class BitacoraController {
         }
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA','ROLE_TECNICO'])
     @Transactional
     def delete(Bitacora bitacora) {
 
@@ -113,6 +118,7 @@ class BitacoraController {
         }
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA','ROLE_TECNICO'])
     protected void notFound() {
         request.withFormat {
             form multipartForm {

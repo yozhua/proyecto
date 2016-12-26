@@ -18,11 +18,10 @@ function obtenerParametros(){
   guardarCliente();
 }
 
-
 function guardarCliente(){
   var formData = new FormData();
   formData.append('cliente',JSON.stringify(cliente));
-  uri =CONTEXT_ROOT+"/cliente/save"
+  uri = CONTEXT_ROOT+"/cliente/save"
   $.ajax({
       url: uri,
       data: formData,

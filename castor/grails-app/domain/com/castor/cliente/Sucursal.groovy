@@ -18,6 +18,7 @@ class Sucursal {
 	String pais
 	Integer codigoPostal
 	String referencias
+	boolean estatus
 
 	static belongsTo = [cliente: Cliente,
 						tipoSucursal: TipoSucursal]
@@ -28,10 +29,10 @@ class Sucursal {
     static constraints = {
     	cliente nullable: false
 		tipoSucursal nullable: false
-		nombre minSize: 3, maxSize: 50
+		nombre minSize: 2, maxSize: 50
 		telefono minSize: 7, maxSize: 10
-		calle minSize: 3, maxSize: 50
-		numeroExterior minSize: 3, maxSize: 50
+		calle minSize: 2, maxSize: 50
+		numeroExterior minSize: 1, maxSize: 50
 		numeroInterior nullable: true
 		colonia minSize: 3, maxSize: 50
 		ciudad minSize: 3, maxSize: 50
@@ -40,6 +41,7 @@ class Sucursal {
 		pais minSize: 3, maxSize: 50
 		codigoPostal minSize: 5, maxSize: 5
 		referencias nullable: true
+		estatus nullable: false
     }
 	
 	static mapping = {
