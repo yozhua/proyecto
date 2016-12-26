@@ -1,6 +1,7 @@
 package com.castor.empleado
 import com.castor.seguridad.*
 
+import groovy.json.JsonSlurper
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.converters.JSON
@@ -18,7 +19,7 @@ import org.springframework.security.web.WebAttributes
 import javax.servlet.http.HttpServletResponse
 
 
-@Secured('permitAll')
+@Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
 
 @Transactional(readOnly = true)
 class EmpleadoController {
@@ -38,12 +39,81 @@ class EmpleadoController {
     def busqueda() {
         render view: '/empleado/find'
     }
-    def show(Empleado empleado) {
-        respond empleado
+    def show() {
+        def empleado = Empleado.findById(params.id)
+
+        def usuarios = User.find(empleado.user)
+
+        def domicilio = DomicilioEmpleado.findByEmpleado(empleado)
+
+        def rol = Role.find(UserRole.findByUser(usuarios).role)
+        params.empleado=empleado
+        params.domicilio = domicilio
+        params.user = usuarios
+        params.rol = rol
+
+        respond params as JSON
     }
 
     def create() {
         respond new Empleado(params)
+    }
+
+    def busca(){
+      try{
+
+        def slurper = new JsonSlurper()
+        def empleados=slurper.parseText(params.empleado)
+        println empleados
+        def query = "from Empleado em "
+        def qnombre = "em.nombre ="+ empleados.nombre
+        def qapellidoPaterno = "em.apellidoPaterno ="+empleados.apellidoPaterno
+        def qapellidoMaterno = "em.apellidoMaterno ="+empleados.apellidoMaterno
+        def qestatus = "em.estatus ="+empleados.estatus
+        def where = false
+
+        if(empleados.nombre != null && (empleados.nombre.length() > 0)){
+          if(where){
+            query+= " "+ qnombre
+          }else{
+            query+=" where "+qnombre
+            where=true
+          }
+        }
+        if(empleados.apellidoPaterno != null && (empleados.apellidoPaterno.length() > 0)){
+          if(where){
+            query+= " and "+ qapellidoPaterno
+          }else{
+            query+=" where "+qapellidoPaterno
+            where=true
+          }
+        }
+        if(empleados.apellidoMaterno != null && (empleados.apellidoMaterno.length() > 0)){
+          if(where){
+            query+= " and "+ qapellidoMaterno
+          }else{
+            query+=" where "+qapellidoMaterno
+            where=true
+          }
+        }
+        if(empleados.estatus != null && (empleados.estatus.length() > 0)){
+          if(where){
+            query+= " and "+ qestatus
+          }else{
+            query+=" where "+qestatus
+            where=true
+          }
+        }
+        def empleadobusqueda = Empleado.findAll  (query)
+        println empleadobusqueda as JSON
+        response.status = 200
+        render (empleadobusqueda as JSON)
+      }
+        catch(Exception ex){
+          response.status = 500
+          render ([message: "Hubo un error"] as JSON)
+      }
+
     }
 
     @Transactional
@@ -75,7 +145,7 @@ class EmpleadoController {
 
         if (!empleado.validate()) {
             transactionStatus.setRollbackOnly()
-            respond empleado.errors, view:'create'
+            respond empleado.errors
             return
         }
 
@@ -90,21 +160,52 @@ class EmpleadoController {
         }
     }
 
-    def edit(Empleado empleado) {
-        respond empleado
+    def edit() {
+      def empleado = Empleado.findById(params.id)
+
+      def usuarios = User.find(empleado.user)
+
+      def domicilio = DomicilioEmpleado.findByEmpleado(empleado)
+
+      def rol = Role.find(UserRole.findByUser(usuarios).role)
+      params.empleado=empleado
+      params.domicilio = domicilio
+      params.user = usuarios
+      params.rol = rol
+
+      respond params
     }
 
     @Transactional
     def update(Empleado empleado) {
+        println params as JSON
+        def empleado2 = JSON.parse(params.empleado)
+        def user = User.get(empleado2.user)
+        println user as JSON
+        println empleado as JSON
+
+
+        empleado.user = user
+        empleado.nombre = empleado2.nombre
+        empleado.apellidoPaterno = empleado2.apellidoPaterno
+        empleado.apellidoMaterno = empleado2.apellidoMaterno
+        empleado.telefono = empleado2.telefono
+        empleado.nombreContacto = empleado2.nombreContacto
+        empleado.telefonoContacto = empleado2.telefonoContacto
+        empleado.relacionContacto = empleado2.relacionContacto
+        empleado.estatus = empleado2.estaus
+
+        println empleado as JSON
+
         if (empleado == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (empleado.hasErrors()) {
+        if (!empleado.validate()) {
             transactionStatus.setRollbackOnly()
-            respond empleado.errors, view:'edit'
+            respond empleado.errors
             return
         }
 

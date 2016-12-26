@@ -11,7 +11,7 @@ dataSource:
     jmxExport: true
     driverClassName: org.postgresql.Driver
     username: postgres
-    password: bluit
+    password: fercho
 
 environments:
     development:
@@ -47,41 +47,18 @@ environments:
 
 ---
 ---
-
-jasypt:
-  algorithm: "PBEWITHSHA256AND256BITAES-CBC-BC"
-  providerName: "BC"
-  password: "residencia"
-  keyObtentionIterations: 1000
-
 grails:
-    mail:
-      host:     'smtp.gmail.com'
-      port:     465
-      username: 'yozhuaLiBritania@gmail.com'
-      password: 'akatzuki'
-      props:
-        'mail.smtp.auth':                   true
-        'mail.smtp.socketFactory.port':     465
-        'mail.smtp.socketFactory.class':    'javax.net.ssl.SSLSocketFactory'
-        'mail.smtp.socketFactory.fallback': false
-
     profile: web
     codegen:
-        defaultPackage: castor
+        defaultPackage: ventas
     spring:
         transactionManagement:
             proxies: false
-    
-    
 info:
     app:
         name: '@info.app.name@'
         version: '@info.app.version@'
         grailsVersion: '@info.app.grailsVersion@'
-
-        
-
 spring:
     groovy:
         template:

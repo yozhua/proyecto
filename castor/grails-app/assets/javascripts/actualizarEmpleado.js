@@ -8,89 +8,15 @@ var domicilioEmpleado = new DomicilioEmpleado();
 var user = new User();
 var userrole = new UserRole();
 
-function usuarioBuscar(usuario){
-  if(usuario !== null){
-    var formData = new FormData();
-
-    var uri=CONTEXT_ROOT+"/user/getUser";
-    formData.append('username',usuario);
-    $.ajax({
-        url: uri,
-        data: formData,
-        processData: false,
-        contentType: false,
-        type: 'POST',
-        success: function (data) {
-          if (!data.disponible) {
-            alertify.error('usuario no disponible');
-            document.getElementById("username").focus();
-          }
-        },
-
-        error: function(data,textStatus,errorThrown){
-          if(data.responseJSON.message===undefined){
-            console.error("Hubo un error.");
-          }else{
-            console.error(data.responseJSON.message);
-          }
-          return false;
-        }
-      });
-    }
-}
-
-function emailVerificar(email){
-  if(email !== null){
-    var formData = new FormData();
-
-    var uri=CONTEXT_ROOT+"/user/getEmail";
-    formData.append('email',email);
-    $.ajax({
-        url: uri,
-        data: formData,
-        processData: false,
-        contentType: false,
-        type: 'POST',
-        success: function (data) {
-          if (data.disponible) {
-            alertify.error('Email ya registrado');
-            document.getElementById("email").focus();
-          }
-        },
-
-        error: function(data,textStatus,errorThrown){
-          if(data.responseJSON.message===undefined){
-            console.error("Hubo un error.");
-          }else{
-            console.error(data.responseJSON.message);
-          }
-          return false;
-        }
-      });
-    }
-}
-function paswordsIguales(){
-  var pass1 = document.getElementById("password1").value;
-  var pass2 = document.getElementById("password2").value;
-
-  if (pass1 !== pass2) {
-    alertify.error('Las Contraseñas NO Coinciden');
-  }else if (pass2 == "") {
-
-  }else {
-    alertify.success('Las Contraseñas Coinciden')
-  }
-
-}
-
-function guardar(){
+function guardarDatos(){
   var formData = new FormData();
   console.log(user);
 
   user.username = document.getElementsByName("username")[0].value;
   user.email = document.getElementsByName("email")[0].value;
-  user.password = document.getElementsByName("password")[0].value;
-  console.log(user);
+  //user.password = document.getElementsByName("password")[0].value;
+  //empleado = document.getElementsByName("empleados")[0].value;
+  console.log(empleado);
 
   empleado.nombre = document.getElementsByName("nombre")[0].value;
   empleado.apellidoPaterno = document.getElementsByName("apellidoPaterno")[0].value;
@@ -116,42 +42,13 @@ function guardar(){
   userrole.role = document.getElementsByName("role")[0].value;
   console.log(userrole);
 
-  guardarUser();
-
-}
-function empleadoG(){
-  var formData = new FormData();
-  uri=CONTEXT_ROOT+"/user/numeroUser"
-  $.ajax({
-      url: uri,
-      data: formData,
-      processData: false,
-      contentType: false,
-      type: 'POST',
-      success: function (data) {
-        empleado.user =data.id;
-        userrole.user = data.id;
-        console.log(empleado);
-        console.log(userrole);
-        rol();
-        guardarEmpleado();
-        domicilioSave();
-
-      },
-
-      error: function(data,textStatus,errorThrown){
-        if(data.responseJSON.message===undefined){
-          console.error("Hubo un error.");
-        }else{
-          console.error(data.responseJSON.message);
-        }
-        return false;
-      }
-  });
-
+  roles();
+  actualizarDomicilio();
+  actualizarEmp();
+  actualizarUser();
 }
 
-function rol(){
+function roles(){
   var formData = new FormData();
   formData.append('rol',userrole.role);
   uri=CONTEXT_ROOT+"/user/numeroRole"
@@ -164,58 +61,62 @@ function rol(){
       success: function (data) {
         userrole.role = data.id;
         console.log(userrole);
-        guardarUserRole();
+        actualizarUserRole();
       },
 
       error: function(data,textStatus,errorThrown){
         if(data.responseJSON.message===undefined){
           console.error("Hubo un error.");
+          alertify.error("Hubo un error.");
         }else{
           console.error(data.responseJSON.message);
+          alertify.error(data.responseJSON.message);
         }
         return false;
       }
   });
 }
 
-function guardarUser(){
+function actualizarUser(){
   var formData = new FormData();
 
   formData.append('user',JSON.stringify(user));
-  uri =CONTEXT_ROOT+"/user/save"
+  uri =CONTEXT_ROOT+"/user/update"
   $.ajax({
       url: uri,
       data: formData,
       processData: false,
       contentType: false,
-      type: 'POST',
+      type: 'PUT',
       success: function () {
         //console.log(data);
         console.log("datos guardados");
-        empleadoG();
+        //empleadoG();
       },
 
       error: function(data,textStatus,errorThrown){
         if(data.responseJSON.message===undefined){
           console.error("Hubo un error.");
+          alertify.error("Hubo un error.");
         }else{
           console.error(data.responseJSON.message);
+          alertify.error(data.responseJSON.message);
         }
         return false;
       }
   });
 }
-function guardarEmpleado(){
+function actualizarEmp(){
   var formData = new FormData();
 
   formData.append('empleado',JSON.stringify(empleado));
-  uri =CONTEXT_ROOT+"/empleado/save"
+  uri =CONTEXT_ROOT+"/empleado/update"
   $.ajax({
       url: uri,
       data: formData,
       processData: false,
       contentType: false,
-      type: 'POST',
+      type: 'PUT',
       success: function () {
         //console.log(data);
         console.log("datos guardados");
@@ -225,25 +126,27 @@ function guardarEmpleado(){
       error: function(data,textStatus,errorThrown){
         if(data.responseJSON.message===undefined){
           console.error("Hubo un error.");
+          alertify.error("Hubo un error.");
         }else{
           console.error(data.responseJSON.message);
+          alertify.error(data.responseJSON.message);
         }
         return false;
       }
   });
 }
-function guardarUserRole(){
+function actualizarUserRole(){
   var formData = new FormData();
   console.log(userrole);
 
   formData.append('userrole',JSON.stringify(userrole));
-  uri =CONTEXT_ROOT+"/userRole/save"
+  uri =CONTEXT_ROOT+"/userRole/update"
   $.ajax({
       url: uri,
       data: formData,
       processData: false,
       contentType: false,
-      type: 'POST',
+      type: 'PUT',
       success: function () {
         //console.log(data);
         console.log("datos guardados");
@@ -252,26 +155,28 @@ function guardarUserRole(){
       error: function(data,textStatus,errorThrown){
         if(data.responseJSON.message===undefined){
           console.error("Hubo un error.");
+          alertify.error("Hubo un error.");
         }else{
           console.error(data.responseJSON.message);
+          alertify.error(data.responseJSON.message);
         }
         return false;
       }
   });
 }
 
-function domicilioSave(){
+function actualizarDomicilio(){
   var formData = new FormData();
   console.log(domicilioEmpleado);
 
   formData.append('domicilioEmpleado',JSON.stringify(domicilioEmpleado));
-  uri =CONTEXT_ROOT+"/domicilioEmpleado/save"
+  uri =CONTEXT_ROOT+"/domicilioEmpleado/update"
   $.ajax({
       url: uri,
       data: formData,
       processData: false,
       contentType: false,
-      type: 'POST',
+      type: 'PUT',
       success: function () {
         //console.log(data);
         console.log("datos guardados");
@@ -280,16 +185,12 @@ function domicilioSave(){
       error: function(data,textStatus,errorThrown){
         if(data.responseJSON.message===undefined){
           console.error("Hubo un error.");
+          alertify.error("Hubo un error.");
         }else{
           console.error(data.responseJSON.message);
+          alertify.error(data.responseJSON.message);
         }
         return false;
       }
   });
-}
-function cancelar(){
-  alertify.confirm('CONFIRME', '¿SEGURO DE QUERER SALIR ?', function(){ location.href=CONTEXT_ROOT+"/" }
-                , function(){ alertify.success('CONTINUE')})
-                                      .setting({'closable':false,
-                                                'labels':{ok:'¡SI!', cancel:'¡NO!'}});
 }

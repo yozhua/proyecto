@@ -30,73 +30,73 @@
 
                   <div class= "form-section show">
                     <div class="panel-body panel-body-inputin">
-                    <div class="bs-example5">
+                      <div class="bs-example5">
 
                         <h3 class ="blank1"><g:message code="Usuario" /></h3>
                         <br>
 
-                      <div class="form-group">
-                				<label class="col-md-2 control-label">Usuario</label>
-                				<div class="col-md-3">
-                					<div class="input-group input-group1">
-                						<input type="text" id="username" name="username" class="form-control1" placeholder="Usuario" onblur="usuarioBuscar(this.value)" required>
-                            <span class="input-group-addon">
-                							<i class="fa fa-user"></i>
-                						</span>
-                					</div>
-                				</div>
-                        <label class="col-md-2 control-label">Role:</label>
-                            <div class="col-md-3">
-                                <div class="input-group input-group1">
-                                    <g:select
-                                              name="role" value=""
-                                              class="form-control1"
-                                              noSelection="${['null':'Selecciona...']}"
-                                              from="${Role.where{authority!='ROLE_CLIENTE'}.list()}"
-                                              optionValue="authority"
-                                              optionKey="id"
-                                              required=""
-                                              />
+                          <div class="form-group">
+                    				<label class="col-md-2 control-label">Usuario</label>
+                    				<div class="col-md-3">
+                    					<div class="input-group input-group1">
+                    						<input type="text" id="username" name="username" class="form-control1" placeholder="Usuario" onblur="usuarioBuscar(this.value)" required>
+                                <span class="input-group-addon">
+                    							<i class="fa fa-user"></i>
+                    						</span>
+                    					</div>
+                    				</div>
+                            <label class="col-md-2 control-label">Role:</label>
+                                <div class="col-md-3">
+                                    <div class="input-group input-group1">
+                                        <g:select
+                                                  name="role" value=""
+                                                  class="form-control1"
+                                                  noSelection="${['':'Selecciona un ROL']}"
+                                                  from="${Role.where{authority!='ROLE_CLIENTE'}.list()}"
+                                                  optionValue="authority"
+                                                  optionKey="id"
+                                                  required=""
+                                                  />
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                      <div class="form-group">
-                				<label class="col-md-2 control-label">Correo Electronico</label>
-                				<div class="col-md-3">
-                					<div class="input-group input-group1">
-                						<input type="email" id="email" name="email" class="form-control1"  placeholder="Correo Electronico" onblur="emailVerificar(this.value)" required>
-                            <span class="input-group-addon">
-                							<i class="fa fa-envelope-o"></i>
-                						</span>
-                					</div>
-                				</div>
-                      </div>
+                          </div>
+                          <div class="form-group">
+                    				<label class="col-md-2 control-label">Correo Electronico</label>
+                    				<div class="col-md-3">
+                    					<div class="input-group input-group1">
+                    						<input type="email" id="email" name="email" class="form-control1"  placeholder="Correo Electronico" onblur="emailVerificar(this.value)" required>
+                                <span class="input-group-addon">
+                    							<i class="fa fa-envelope-o"></i>
+                    						</span>
+                    					</div>
+                    				</div>
+                          </div>
 
-                      <div class="form-group">
-                				<label class="col-md-2 control-label">Contraseña</label>
-                				<div class="col-md-3">
-                					<div class="input-group input-group1">
-                						<input type="password" id="password1" name="password" class="form-control1" placeholder="Contraseña" required>
-                            <span class="input-group-addon">
-                							<i class="fa fa-lock"></i>
-                						</span>
-                					</div>
-                				</div>
-                				<div class="clearfix"> </div>
-                			</div>
+                          <div class="form-group">
+                    				<label class="col-md-2 control-label">Contraseña</label>
+                    				<div class="col-md-3">
+                    					<div class="input-group input-group1">
+                    						<input type="password" id="password1" name="password" class="form-control1" placeholder="Contraseña" required>
+                                <span class="input-group-addon">
+                    							<i class="fa fa-lock"></i>
+                    						</span>
+                    					</div>
+                    				</div>
+                    				<div class="clearfix"> </div>
+                    			</div>
 
-                      <div class="form-group">
-                				<label class="col-md-2 control-label">Confirme Contraseña</label>
-                				<div class="col-md-3">
-                					<div class="input-group input-group1">
-                						<input type="password" id="password2" class="form-control1" placeholder="Confirme Contraseña" onblur= paswordsIguales() required>
-                            <span class="input-group-addon">
-                							<i class="fa fa-lock"></i>
-                						</span>
-                					</div>
-                				</div>
-                				<div class="clearfix"> </div>
-                			</div>
+                          <div class="form-group">
+                    				<label class="col-md-2 control-label">Confirme Contraseña</label>
+                    				<div class="col-md-3">
+                    					<div class="input-group input-group1">
+                    						<input type="password" id="password2" class="form-control1" placeholder="Confirme Contraseña" onblur= paswordsIguales() required>
+                                <span class="input-group-addon">
+                    							<i class="fa fa-lock"></i>
+                    						</span>
+                    					</div>
+                    				</div>
+                    				<div class="clearfix"> </div>
+                    			</div>
 
                   			</div>
                       </div>
@@ -236,7 +236,7 @@
 
                           <label class="col-md-1 control-label"for="codigoPostal">Codigo Postal*</label>
                           <div class="col-md-1" >
-                            <input type="text"  class="form-control1" name="codigoPostal" value="${domicilio?.codigoPostal}" required/>
+                            <input type="text"  class="form-control1" name="codigoPostal" value="${domicilio?.codigoPostal}" data-parsley-length="[, 5]" required/>
                           </div>
                         </div>
                         <div class="form-group">
@@ -274,7 +274,7 @@
               .on('form:submit', function() {
                 guardar();
                 alertify.success('LOS DATOS SE HAN GUARDADO CORRECTAMENTE');
-                formInstance.reset();
+                //formInstance.reset();
                 return false;
               });
             });

@@ -19,7 +19,7 @@ import org.springframework.security.web.WebAttributes
 
 import javax.servlet.http.HttpServletResponse
 
-@Secured('permitAll')
+@Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA','ROLE_TECNICO'])
 @Transactional(readOnly = true)
 class UserController {
 
@@ -228,13 +228,19 @@ class UserController {
 
     @Transactional
     def update(User user) {
+        def usuario = JSON.parse(params.user)
+        println usuario as JSON
+
+        user.username = usuario.username
+        user.email = usuario.email
+        
         if (user == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (user.hasErrors()) {
+        if (!user.validate()) {
             transactionStatus.setRollbackOnly()
             respond user.errors, view:'edit'
             return
