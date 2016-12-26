@@ -15,25 +15,28 @@ import org.springframework.security.web.WebAttributes
 
 import javax.servlet.http.HttpServletResponse
 
-@Secured('ROLE_ADMIN,ROLE_ADMINISTRATIVO,ROLE_TECNICO,ROLE_GERENCIA')
 @Transactional(readOnly = true)
 class TipoAsistenciaController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-   
+    
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA','ROLE_TECNICO'])   
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond TipoAsistencia.list(params), model:[tipoAsistenciaCount: TipoAsistencia.count()]
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA','ROLE_TECNICO'])
     def show(TipoAsistencia tipoAsistencia) {
         respond tipoAsistencia
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA','ROLE_TECNICO'])
     def create() {
         respond new TipoAsistencia(params)
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA','ROLE_TECNICO'])
     @Transactional
     def save(TipoAsistencia tipoAsistencia) {
         if (tipoAsistencia == null) {
@@ -59,10 +62,12 @@ class TipoAsistenciaController {
         }
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA','ROLE_TECNICO'])
     def edit(TipoAsistencia tipoAsistencia) {
         respond tipoAsistencia
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA','ROLE_TECNICO'])
     @Transactional
     def update(TipoAsistencia tipoAsistencia) {
         if (tipoAsistencia == null) {
@@ -88,6 +93,7 @@ class TipoAsistenciaController {
         }
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA','ROLE_TECNICO'])
     @Transactional
     def delete(TipoAsistencia tipoAsistencia) {
 
@@ -107,7 +113,8 @@ class TipoAsistenciaController {
             '*'{ render status: NO_CONTENT }
         }
     }
-
+    
+    @Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA','ROLE_TECNICO'])
     protected void notFound() {
         request.withFormat {
             form multipartForm {

@@ -6,46 +6,78 @@
         <meta name="layout" content="main" />
         <asset:javascript src="jquery-2.2.0.min.js"/>
         <asset:javascript src="myjavascript.js"/>
-        <asset:javascript src="guardarCliente.js"/>
+        <asset:javascript src="clienteliente.js"/>
         <g:set var="entityName" value="${message(code: 'cliente.label', default: 'Cliente')}" />
-        <title><g:message code="Registrar cliente." args="[entityName]" /></title>
+        <title><g:message code="Registrar cliente." /></title>
     </head>
     <body>
     <section>
         <div id="create-cliente" class="content scaffold-create" role="main">
             <g:if test="${flash.message}">
-            <div class="message" role="status">${flash.message}</div>
+               <g:javascript>
+                    $( document ).ready(
+                        function() {
+                            var delay = alertify.get('notifier','delay');
+                            alertify.set('notifier','delay', 13);
+                            alertify.success("${flash.message}");
+                            alertify.set('notifier','delay', delay);
+                        }
+                    );
+                </g:javascript>
             </g:if>
+            <g:if test="${flash.error}">
+                <g:javascript>
+                    $( document ).ready(
+                        function() {
+                            var delay = alertify.get('notifier','delay');
+                            alertify.set('notifier','delay', 13);
+                            alertify.error("${flash.error}");
+                            alertify.set('notifier','delay', delay);
+                        }
+                    );
+                </g:javascript>
+            </g:if>                
             <g:hasErrors bean="${this.cliente}">
-            <ul class="errors" role="alert">
-                <g:eachError bean="${this.cliente}" var="error">
-                <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
-                </g:eachError>
-            </ul>
-            </g:hasErrors>
+                <ul class="errors" role="alert">
+                    <g:eachError bean="${this.cliente}" var="error">
+                        <g:javascript>
+                            $( document ).ready(
+                                function() {
+                                    var delay = alertify.get('notifier','delay');
+                                    alertify.set('notifier','delay', 13);
+                                    alertify.error("${error}");
+                                    alertify.set('notifier','delay', delay);
+                                }
+                            );
+                        </g:javascript>
+                    </g:eachError>
+                </ul>
+            </g:hasErrors>            
             <br>
-            <h1 align="center"> Registrar cliente.</h1><br>
-            <div class="panel-body panel-body-inputin">
-                <fieldset class="form">
-                <g:form action="save" role="form" class="form-horizontal">
+            <b><h1 align="center"> Registrar cliente.</h1></b><br>
+            <div class="panel-body panel-body-inputin">                            
+                <fieldset class="form-horizontal">
+                <g:form action="save" class="form" onSubmit="return validarCliente()">                 
                     <div class="bs-example5">
-                    <legend><h4>Información general</h4></legend>
+                    <legend> <b><h4>Información general</h4></b></legend>
                         <div class="form-group">
-                            <label class="col-md-2 control-label">Nombre comercial:</label>
+                            <label class="col-md-2 control-label"><b>Nombre comercial:</b></label>
                             <div class="col-md-4">
                                 <div class="input-group input-group1">
-                                    <g:textField type="text" class="form-control1" name="nombreComercial" id="nombreComercial" placeholder="Buscar ..." value="${nombreComercial}" required=""  />
+                                    <g:textField type="text" class="form-control1" name="nombreComercial" id="nombreComercial" placeholder="..." value="${nombreComercial}" required=""  />
                                 </div>
                             </div>
                             <div class="clearfix"> </div>
                         </div>
                        <div class="form-group">
-                            <label class="col-md-2 control-label">Tipo de cobertura:</label>
+                            <label class="col-md-2 control-label"><b>Tipo de cobertura:</b></label>
                             <div class="col-md-4">
-                                <div class="input-group input-group1">
-                                    <g:select name="tipoCliente"
+                                <div class="input-group input-group1">                           
+                                    <g:select
+                                        noSelection="${['':'Selecciona']}"
+                                        name="tipoCliente"
+                                        required=""
                                         class="form-control1"
-                                        noSelection="${['null':'Selecciona']}"
                                         from="${TipoCliente.list()}"
                                         value="${com?.castor?.cliente?.tipoCliente?.nombre}"
                                         optionValue="nombre"
@@ -55,13 +87,13 @@
                             <div class="clearfix"> </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-2 control-label">Tipo de persona:</label>
+                            <label class="col-md-2 control-label"><b>Tipo de persona:</b></label>
                             <div class="col-md-4">
-                                <div class="input-group input-group1">
-                                    <g:javascript type="text/JavaScript">
-                                        $(function() {
-                                            $('#personaFisica').hide();
-                                            $('#personaMoral').hide();
+                                <div class="input-group input-group1">                           
+                                    <script type="text/javascript">
+                                        $(function() {                                                
+                                            $('#personaFisica').hide(); 
+                                            $('#personaMoral').hide(); 
                                             $('#tipoPersona').change(function(){
                                                 if($('#tipoPersona').val() == 1) {
                                                     $('#personaFisica').show();
@@ -77,12 +109,13 @@
                                                 }
                                             });
                                         });
-                                    </g:javascript>
+                                    </script>
                                     <g:select
+                                        required=""
                                         id="tipoPersona"
                                         name="tipoPersona"
                                         class="form-control1"
-                                        noSelection="${['null':'Selecciona']}"
+                                        noSelection="${['':'Selecciona']}"
                                         from="${TipoPersona.list()}"
                                         value="${com?.castor?.cliente?.tipoPersona?.nombre}"
                                         optionValue="nombre"
@@ -94,28 +127,28 @@
                         </div>
                         <div id="personaFisica" style="display:;">
                             <div class="form-group">
-                                <label class="col-md-2 control-label">Apellido paterno:</label>
+                                <label class="col-md-2 control-label"><b>Apellido paterno:</b></label>
                                 <div class="col-md-4">
-                                    <div class="input-group input-group1">
-                                        <g:textField type="text" class="form-control1" name="apellidoPaterno" id="apellidoPaterno" value="${apellidoPaterno}" placeholder="Buscar ..." />
+                                    <div class="input-group input-group1">                           
+                                        <g:textField type="text" class="form-control1" name="apellidoPaterno" id="apellidoPaterno" value="${apellidoPaterno}" placeholder="..." />
                                     </div>
                                 </div>
                                 <div class="clearfix"> </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-2 control-label">Apellido materno:</label>
+                                <label class="col-md-2 control-label"><b>Apellido materno:</b></label>
                                 <div class="col-md-4">
-                                    <div class="input-group input-group1">
-                                       <g:textField type="text" class="form-control1" name="apellidoMaterno" id="apellidoMaterno" value="${apellidoMaterno}" placeholder="Buscar ..." />
+                                    <div class="input-group input-group1">                           
+                                       <g:textField type="text" class="form-control1" name="apellidoMaterno" id="apellidoMaterno" value="${apellidoMaterno}" placeholder="..." />
                                     </div>
                                 </div>
                                 <div class="clearfix"> </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-2 control-label">Nombre(s):</label>
+                                <label class="col-md-2 control-label"><b>Nombre(s):</b></label>
                                 <div class="col-md-4">
-                                    <div class="input-group input-group1">
-                                        <g:textField type="text" class="form-control1" name="nombrePersona" id="nombrePersona" value="${nombrePersona}" placeholder="Buscar ..." />
+                                    <div class="input-group input-group1">                           
+                                        <g:textField type="text" class="form-control1" name="nombrePersona" id="nombrePersona" value="${nombrePersona}" placeholder="..." />
                                     </div>
                                 </div>
                                 <div class="clearfix"> </div>
@@ -123,61 +156,62 @@
                         </div>
                         <div id="personaMoral" style="display:;">
                             <div class="form-group">
-                                <label class="col-md-2 control-label">Razón social:: </label>
-                                <div class="col-md-8">
-                                    <div class="input-group input-group1">
-                                        <g:textArea placeholder="describe la razón social..."  cols="100" rows="2" name="razonSocial" id="razonSocial" value="${razonSocial}" />
+                                <label class="col-md-2 control-label"><b>Razón social:</b></label>
+                                <div class="col-md-6">
+                                    <div class="input-group input-group1">                           
+                                        <g:textArea placeholder="describe la razón social..." cols="55" rows="3"  name="razonSocial" id="razonSocial" value="${razonSocial}" />
                                     </div>
                                 </div>
                                 <div class="clearfix"> </div>
                             </div>
                         </div>
                         <div class="form-group">
-                           <label class="col-md-2 control-label">RFC:</label>
+                           <label class="col-md-2 control-label"><b>RFC:</b></label>
                             <div class="col-md-4">
-                                <div class="input-group input-group1">
-                                    <g:textField type="text" class="form-control1" name="rfc" id="rfc" placeholder="Buscar ..." value="${rfc}" required="" onblur="validaRFC(this.value)"/>
+                                <div class="input-group input-group1">                           
+                                    <g:textField type="text" class="form-control1" name="rfc" id="rfc" placeholder="..." value="${rfc}" required="" style="text-transform:uppercase;" onChange="validaRFC(this.value)" maxlength="13"/>   
                                 </div>
                             </div>
                             <div class="clearfix"> </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-2 control-label">Correo electronico:</label>
+                            <label class="col-md-2 control-label"><b>Correo electronico:</b></label>
                             <div class="col-md-4">
-                                <div class="input-group input-group1">
-                                    <g:textField type="text" class="form-control1" name="email" id="email" placeholder="Buscar ..." value="${email}" required="" onblur="validarEmail(this.value)" />
+                                <div class="input-group input-group1">                           
+                                    <g:textField type="text" class="form-control1" name="email" id="email" placeholder="..." value="${email}" required="" onChange="validarEmailCliente(this.value)" />   
                                 </div>
                             </div>
                             <div class="clearfix"> </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-2 control-label">Teléfono fijo:</label>
+                            <label class="col-md-2 control-label"><b>Teléfono fijo:</b></label>
                             <div class="col-md-4">
-                                <div class="input-group input-group1">
-                                    <g:textField type="text" class="form-control1" name="telefonofijo" id="telefonofijo" placeholder="Buscar ..." value="${telefonofijo}" required="" maxlength="8"/>
+                                <div class="input-group input-group1">                           
+                                    <g:textField type="text" class="form-control1" name="telefonofijo" id="telefonofijo" placeholder="..." value="${telefonofijo}" required="" maxlength="7" onChange="validaTelefonoFijo(this.value)"/>   
                                 </div>
                             </div>
                             <div class="clearfix"> </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-2 control-label">Telélefono movil:</label>
+                            <label class="col-md-2 control-label"><b>Telélefono movil:</b></label>
                             <div class="col-md-4">
-                                <div class="input-group input-group1">
-                                    <g:textField type="text" class="form-control1" name="telefonoCelular" id="telefonoCelular" placeholder="Buscar ..." value="${telefonoCelular}" required="" maxlength="10"/>
+                                <div class="input-group input-group1">                           
+                                    <g:textField type="text" class="form-control1" name="telefonoCelular" id="telefonoCelular" placeholder="..." value="${telefonoCelular}" required="" maxlength="10" onChange="validaTelefonoMovil(this.value)"/>   
                                 </div>
                             </div>
                             <div class="clearfix"> </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-8 col-sm-offset-2">
-                                <button class="btn-primary btn">Guardar.</button>
-                                <button type="button" class="cancelar btn btn btn_5 btn-lg btn-danger " onclick=cancelar()>Cancelar</button>
+                                <button class="btn-primary btn" type="submit">Guardar.</button>
+                                <button class="btn-danger btn"  type="button" onclick=cancelar()>Cancelar</button>
                             </div>
                         </div>
                     </div>
                 </g:form>
+                </fieldset>                
             </div>
         </div>
     </section>
     </body>
-</html>
+</html>          

@@ -1,13 +1,29 @@
 <!doctype html>
 <html>
     <head>
-        <meta name="layout" content="main_not_auth" />
-        <title>Oops! Not found!</title>
+        <title>Pagina no encontrada :(</title>
+        <meta name="layout" content="main">
+        <g:if env="development">
+            <asset:stylesheet src="errors.css"/>
+        </g:if>
     </head>
-<body>
-    <h1>Not Found</h1>
-    <section id="page-body">
-        <p>Nothing was found at your URI!</p>
-    </section>
-</body>
+    <body>
+        <div id="page-wrapper">
+            <div class="graphs">
+                <div class="error-main">
+                    <h3><i class="fa fa-exclamation-triangle"></i> <span>404</span></h3>
+                <div class="col-xs-7 error-main-left">
+                    <span>Oops!</span>
+                    <p>La página que estás buscando no se pudo encontrar :(</p>
+                    <div class="error-btn">
+                        <a href="index.html">Regresar.</a>
+                    </div>
+                </div>
+                <div class="col-xs-5 error-main-right">
+                    <g:img dir="images" file="error.png" alt=" " class="img-responsive" />
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+    </body>
 </html>

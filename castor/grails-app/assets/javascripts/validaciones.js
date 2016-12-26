@@ -53,7 +53,7 @@ function emailVerificar(email){
         type: 'POST',
         success: function (data) {
           if (data.disponible) {
-            alertify.error('Email ya registrado');
+            alertify.error('Email ya se encuentra registrado');
             document.getElementById("email").focus();
           }
         },
@@ -74,7 +74,8 @@ function paswordsIguales(){
   var pass2 = document.getElementById("password2").value;
 
   if (pass1 !== pass2) {
-    alertify.error('Las Contraseñas NO Coinciden');
+    alertify.error('Las Contraseñas NO Coinciden');    
+    document.getElementById("password1").focus();    
   }else if (pass2 == "") {
 
   }else {

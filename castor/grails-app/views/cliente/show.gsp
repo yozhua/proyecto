@@ -13,7 +13,16 @@
     <body>
         <div id="show-cliente" class="content scaffold-show" role="main">           
             <g:if test="${flash.message}">
-                <div class="message" role="status">${flash.message}</div>
+                    <script>
+                    $( document ).ready(
+                        function() {
+                            var delay = alertify.get('notifier','delay');
+                            alertify.set('notifier','delay', 13);
+                            alertify.success("${flash.message}");
+                            alertify.set('notifier','delay', delay);
+                        }
+                    );
+                </script>
             </g:if>
             <br>
             <h1 align="center"> Datos del cliente.</h1><br>
@@ -93,7 +102,7 @@
                            <label class="col-md-2 control-label"><b>RFC:</b></label>
                             <div class="col-md-4">
                                 <div class="input-group input-group1">
-                                    <p>${cliente?.rfc}</p>
+                                    <p style="text-transform:uppercase;">${cliente?.rfc}</p>
                                 </div>
                             </div>
                             <div class="clearfix"> </div>

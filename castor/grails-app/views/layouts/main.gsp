@@ -94,7 +94,7 @@
                                 <a href="#"><i class="fa fa-shopping-cart"></i>
                                     <span>Sucursales</span></a>
                                     <ul class="sub-menu-list">
-                                        <li><a href="grids.html"><i class="fa fa-search"></i>Regitrar</a> </li>
+                                        <li><g:link controller="sucursal" action="create"><i class="fa fa-users" aria-hidden="true"></i>Registrar.</g:link></li>
                                         <li><g:link controller="sucursal" action="busqueda"><i class="fa fa-search" aria-hidden="true"></i>Buscar.</g:link></li>
                                     </ul>
                             </li>
@@ -104,7 +104,7 @@
                                 <a href="#"><i class="fa fa-users" aria-hidden="true"></i>
                                     <span>Encargados.</span></a>
                                     <ul class="sub-menu-list">
-                                        <li><a href="grids.html"><i class="fa fa-user-plus" aria-hidden="true"></i>Regitrar</a> </li>
+                                        <li><g:link controller="encargado" action="create"><i class="fa fa-users" aria-hidden="true"></i>Registrar.</g:link></li>
                                         <li><g:link controller="encargado" action="busqueda"><i class="fa fa-search" aria-hidden="true"></i>Buscar.</g:link></li>
                                     </ul>
                             </li>    
@@ -213,34 +213,12 @@
                                 <div class="clearfix"> </div>
                             </ul>   
                         </sec:ifAnyGranted> 
-                    </div>                    
-                    <g:if test="${nombre == null}">                           
-                        <div class="social_icons">
-                            <div class="col-md-4 social_icons-left">
-                                <g:link controller='user' action='initial_view'>Iniciar Sesion.</g:link> 
-                            </div>                        
-                        </div>                                      
-                    </g:if>             
-                    <g:elseif test="${sec?.username() == null}">                        
-                        <div class="social_icons">
-                            <div class="col-md-4 social_icons-left">
-                                <g:link controller='user' action='initial_view'>Iniciar Sesion.</g:link> 
-                            </div>                        
-                        </div>                                      
-                    </g:elseif>
+                    </div>                                        
                 </div>
             </div>
         </div>
 
         <g:layoutBody/>
-        <!--footer section start-->
-            <footer  align="center" >
-               <p>Residencia.</p>
-               <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
-               <i class="lnr lnr-power-switch"></i>
-            </footer>
-        <!--footer section end-->
-      <!-- main content end-->
     </section>
     <asset:javascript src="jquery.nicescroll.js"/>
     <asset:javascript src="scripts.js"/>
