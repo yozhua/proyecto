@@ -1,17 +1,17 @@
-function validarPassword(){ 
+function validarPassword(){
 	var password = document.getElementById("password").value;
 	var passwordConfirm = document.getElementById("passwordConfirm").value;
 	var espaciosEnBlanco = false;
 	var contador = 0;
- 
+
 	while (!espaciosEnBlanco && (contador < password.length)) {
 		if (password.charAt(contador) == " ")
 		espaciosEnBlanco = true;
 		contador++;
 	}
- 
+
 	if (espaciosEnBlanco) {
-		alertify.error("La contraseña no puede contener espacios en blanco.");			
+		alertify.error("La contraseña no puede contener espacios en blanco.");
 		return false;
 	}
 
@@ -20,18 +20,18 @@ function validarPassword(){
 	  	return false;
 	}
 
-	if (password != passwordConfirm) {		
+	if (password != passwordConfirm) {
 	  	alertify.error("Las contraseñas deben coincidir.");
         document.getElementById("password").focus();
 	  	return false;
 	} else {
 	  	alertify.success("Ahora puedes iniciar sesion.");
-	  	return true; 
+	  	return true;
 	}
 }
 
-function validarEmail(){ 	
-	email = document.getElementById("email").value;	
+function validarEmail(){
+	email = document.getElementById("email").value;
 	expresion = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     if ( !expresion.test(email) ){
 		alertify.error("El email no es correcto.");	        
@@ -39,51 +39,51 @@ function validarEmail(){
 	}
 }
 
-function obtener_fecha() { 
-    var fecha_actual = new Date() 
-    var dia = fecha_actual.getDate() 
-    var mes = fecha_actual.getMonth() + 1 
-    var año = fecha_actual.getFullYear() 
+function obtener_fecha() {
+    var fecha_actual = new Date()
+    var dia = fecha_actual.getDate()
+    var mes = fecha_actual.getMonth() + 1
+    var año = fecha_actual.getFullYear()
 
-    if (mes < 10) 
-        mes = '0' + mes 
+    if (mes < 10)
+        mes = '0' + mes
 
-    if (dia < 10) 
-        dia = '0' + dia 
-    return (dia + "/" + mes + "/" + año) 
-} 
+    if (dia < 10)
+        dia = '0' + dia
+    return (dia + "/" + mes + "/" + año)
+}
 
-function mostrar_Fecha() { 
+function mostrar_Fecha() {
    document.write(fecha_actual.value = obtener_fecha());
-} 
+}
 
 function validarTexto(){
-	var nombre_actividad = document.getElementById("nombre_actividad").value;	
+	var nombre_actividad = document.getElementById("nombre_actividad").value;
 	var espaciosEnBlanco = false;
-	if (nombre_actividad.length == 0) {		
+	if (nombre_actividad.length == 0) {
 	  	alertify.error("El campo de la actividad no pueden quedar vacio");
 	  	return false;
 	} else {
 		agregar();
-	}	
+	}
 }
 
 $(document).ready(function(){
 	$('#bt_add').click(function(){
-		validarTexto();			
+		validarTexto();
 	});
 	$('#bt_edit').click(function(){
 		eliminar(id_fila_selected);
 	});
 	$('#bt_delall').click(function(){
 		eliminarTodasFilas();
-	});		 
+	});
 });
 
 
 var cont=0;
 var id_fila_selected=[];
-	
+
 function agregar(){
 	nombre_actividad = document.getElementById("nombre_actividad").value;			 
 	username = document.getElementById("username").value;					
@@ -93,12 +93,12 @@ function agregar(){
 					   					   '</td><td>'+username+
 										   '</td><td>'+nombre_actividad+
 										   '</td><td><intup id="bt_edit" type="button" value="Editar." class="btn btn-primary" aria-label="Edit"><i class="fa fa-pencil fa-fl" aria-hidden="true"></i></intup>'+""+
-										   '<intup id="bt_delall" type="button" value="Eliminar." class="btn btn-danger" aria-label="Delete"><i class="fa fa-trash-o fa-fl" aria-hidden="true"></i></intup></td></tr>';			            
+										   '<intup id="bt_delall" type="button" value="Eliminar." class="btn btn-danger" aria-label="Delete"><i class="fa fa-trash-o fa-fl" aria-hidden="true"></i></intup></td></tr>';
 
 	$('#tabla').append(fila);
 	reordenar();
 	document.getElementById('nombre_actividad').value="";
-}	
+}
 
 function seleccionar(id_fila){
 		if($('#'+id_fila).hasClass('seleccionada')){
@@ -107,9 +107,9 @@ function seleccionar(id_fila){
 		else{
 			$('#'+id_fila).addClass('seleccionada');
 		}
-		id_fila_selected=id_fila;		
+		id_fila_selected=id_fila;
 	}
-	
+
 function eliminar(id_fila){
 	$('#'+id_fila).remove();
 	reordenar();
@@ -125,7 +125,7 @@ function reordenar(){
 
 function validaRFC(rfc) {
     var rfcCorrecto;
-    rfcCorrecto = rfc;   
+    rfcCorrecto = rfc;
     if (rfc.length == 13){
         var rfcValido = '^(([A-Z]|[a-z]|\s){1})(([A-Z]|[a-z]){3})([0-9]{6})((([A-Z]|[a-z]|[0-9]){3}))';
     } else{
@@ -140,7 +140,7 @@ function validaRFC(rfc) {
     else{
         alertify.success('RFC correcto:' + rfcCorrecto);
         return true;
-    }    
+    }
 }
 
 

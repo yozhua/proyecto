@@ -16,7 +16,7 @@ import org.springframework.security.web.WebAttributes
 
 import javax.servlet.http.HttpServletResponse
 
-@Secured('permitAll')
+@Secured(['ROLE_ADMIN','ROLE_ADMINISTRATIVO','ROLE_GERENCIA'])
 @Transactional(readOnly = true)
 class DomicilioEmpleadoController {
 
@@ -82,14 +82,31 @@ class DomicilioEmpleadoController {
     }
 
     @Transactional
-    def update(DomicilioEmpleado domicilioEmpleado) {
+    def update() {
+        println params as JSON
+        def domicilio = JSON.parse(params.domicilioEmpleado)
+        println domicilio as JSON
+
+        domicilioEmpleado.empleado = Empleado.last()
+        domicilioEmpleado.calle = domicilio.calle
+        domicilioEmpleado.numeroExterior = domicilio.numeroExterior
+        domicilioEmpleado.numeroInterior = domicilio.numeroInterior
+        domicilioEmpleado.colonia = domicilio.colonia
+        domicilioEmpleado.ciudad = domicilio.ciudad
+        domicilioEmpleado.municipio = domicilio.municipio
+        domicilioEmpleado.estado = domicilio.estado
+        domicilioEmpleado.pais = domicilio.pais
+        domicilioEmpleado.codigoPostal = domicilio.codigoPostal.toInteger()
+        domicilioEmpleado.referencias = domicilio.referencias
+
+        println domicilioEmpleado as JSON
         if (domicilioEmpleado == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (domicilioEmpleado.hasErrors()) {
+        if (!domicilioEmpleado.validate()) {
             transactionStatus.setRollbackOnly()
             respond domicilioEmpleado.errors, view:'edit'
             return
