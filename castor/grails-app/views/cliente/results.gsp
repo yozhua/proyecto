@@ -8,6 +8,9 @@
         <title><g:message code="Lista clientes." /></title>
     </head>
 <body class="sign-in-up">
+    <g:render  template="modalCliente"/>
+    <asset:stylesheet src="jtable.min.css"/>       
+    <asset:javascript src="jquery.jtable.min.js"/>
     <g:set var="username" value="${sec?.username()}" />
     <g:set var="nombreUser" value="${User.findByUsername(username)?.username}" />
     <g:set var="id" value="${User.findByUsername(username)?.id}" />    
@@ -31,7 +34,7 @@
                             <g:each in="${listaClientes}">     
                                 <tr>
                                     <td>${it.nombreComercial}</td>
-                                    <td>${it.rfc}</td>
+                                    <td style="text-transform:uppercase;" >${it.rfc}</td>
                                     <td>${it?.tipoPersona?.nombre}</td>  
                                     <td>
                                         <g:if test="${"Persona física" == it?.tipoPersona?.nombre}"> 
@@ -61,9 +64,6 @@
                                                 </g:link>
                                                 <g:link controller="cliente" action="edit" class="btn btn-primary" title="Modificar/Editar." value="${it.id}" url="/cliente/edit/${identificador}" resource="${this.cliente}">
                                                     <i class="fa fa-pencil fa-fl" aria-hidden="true"></i>
-                                                </g:link>
-                                                <g:link class="btn btn-danger" title="Borrar/Eliminar." value="${it.id}" resource="${this.cliente}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');">
-                                                    <i class="fa fa-trash-o fa-fl" aria-hidden="true"></i>
                                                 </g:link>                                                
                                             </div>                                        
                                         </g:form>
@@ -73,7 +73,7 @@
                         </tbody>
                     </table>
                     <div class="pagination">
-                        <g:paginate total="${listaClientesCount ?: 0}" />
+                        <g:paginate total="${listaClientes}" />
                     </div>
                </div>
             </div>   

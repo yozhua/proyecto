@@ -43,21 +43,21 @@
                             <div class="clearfix"></div>   
                             <label for="fecha" class="col-md-2 control-label"> Fecha: </label>
                             <label class="control-label">
-                                <g:javascript type="text/JavaScript"> 
+                                <script type="text/JavaScript"> 
                                     var fecha= new Date(); 
                                     document.write(fecha.getDate() + "/" + 
                                                   (fecha.getMonth() +1) + "/" + 
                                                    fecha.getFullYear()); 
-                                </g:javascript>
+                                </script>
                             </label>
                             <div class="clearfix"></div>   
                             <label for="hora" class="col-md-2 control-label"> Hora: </label>
                             <label class="control-label"> 
-                                <g:javascript type="text/JavaScript"> 
+                                <script type="text/JavaScript"> 
                                     var hora = new Date(); 
                                     document.write(hora.getHours() + ":" + 
                                                    hora.getMinutes()); 
-                                </g:javascript>
+                                </script>
                             </label>
                             <div class="clearfix"></div>   
                         </div>                        
@@ -66,7 +66,8 @@
                             <div class="col-md-3">
                                 <div class="input-group input-group1">
                                     <input type="text" class="form-control1" id="searchCliente" value="" placeholder="Buscar ...">
-                                    <input type="hidden" id="clienteID" name="clienteID" value="" />
+                                    
+                                    <g:hiddenField id="clienteID" name="clienteID" value="" />
                                     <span class="input-group-addon">
                                         <i class="fa fa-search"></i>
                                     </span>
@@ -76,7 +77,8 @@
                             <div class="col-md-3">
                                 <div class="input-group input-group1">                           
                                      <input type="text" class="form-control1" id="searchSucursal" value="" placeholder="Buscar ...">
-                                    <input type="hidden" id="sucursalID" name="sucursalID" value="" />
+                                    
+                                    <g:hiddenField id="sucursalID" name="sucursalID" value="" />
                                     <span class="input-group-addon">
                                         <i class="fa fa-search"></i>
                                     </span>    
@@ -90,6 +92,7 @@
                                 <div class="input-group input-group1">                           
                                     <input type="text" class="form-control1" id="searchQuienAutoriza" value="" placeholder="Buscar ...">
                                     <input type="hidden" id="quienAutorizaID" name="quienAutorizaID" value="" />
+
                                     <span class="input-group-addon">
                                         <i class="fa fa-search"></i>
                                     </span>    
@@ -110,11 +113,11 @@
                         <div class="form-group">
                             <label class="col-md-2 control-label">Tipo de asistencia:</label>
                             <div class="col-md-3">
-                                <div class="input-group input-group1">                           
+                                <div class="input-group input-group1">
                                     <g:select 
                                         name="tipoAsistencia"
                                         class="form-control1"
-                                        noSelection="${['null':'Selecciona']}"
+                                        noSelection="${['':'Selecciona']}"
                                         from="${TipoAsistencia.list()}"
                                         value="${com?.castor?.bitacora?.tipoAsistencia?.nombre}"
                                         optionValue="nombre"
@@ -137,19 +140,16 @@
                         <div class="form-group">
                             <label class="col-md-2 control-label"> Agente de soporte: </label>
                             <label class="control-label" id="username"> ${username} </label>
-                             <label class="control-label">
-                                <g:javascript type="text/JavaScript"> 
-                                    
-                                </g:javascript>
+                             <label class="control-label">                                
                             </label>
-
                             <br>                            
                         </div>
                         <div class="form-group">
                             <label class="col-md-2 control-label">Estado de la bitacora:</label>
                             <div class="col-md-2">
                                 <div class="input-group input-group1">                           
-                                    <g:select name="estadoBitacora"
+                                    <g:select 
+                                        name="estadoBitacora"
                                         class="form-control1"
                                         from="${EstadoBitacora.list()}"
                                         value="${com?.castor?.bitacora?.estadoBitacora?.estado}"
@@ -182,7 +182,7 @@
                         </div> 
                         <div class="form-group">
                             <label class="col-md-2 control-label">Solución: </label>
-                            <div class="col-md-8">
+                            <div class="col-md-6">
                                 <div class="input-group input-group1">                           
                                     <input type="text" class="form-control1" placeholder="Buscar ...">
                                 </div>
@@ -191,20 +191,19 @@
                         </div>
                         <div class="form-group">
                             <label class="col-md-2 control-label">Actividad: </label>
-                            <div class="col-md-6">
+                            <div class="col-md-7">
                                 <div class="input-group input-group1">                                                       
-                                    <textarea id="nombre_actividad" placeholder="describe las actividades..."  cols="100" rows="2" required=""></textarea>
+                                    <textarea id="nombre_actividad" placeholder="describe las actividades..."  cols="100" rows="2"></textarea>
                                 </div>
                                 <div class="input-group input-group1">                                                       
-                                    <input id="bt_add" type="button" value="Agregar." class="col-md-2 btn-default btn" onSubmit="return validarTexto()" />    
+                                    <input id="bt_add" type="button" value="Agregar." id="btnAgregaActividad" name="btnAgregaActividad" class="col-md-2 btn-default btn" onSubmit="return validarTexto()" />    
                                 </div>                                   
                             </div>   
                             <div class="clearfix"> </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-2 control-label"> Lista de actividades: </label>
-
-                            <div class="col-md-8 btn-group">
+                            <div class="col-md-6 btn-group">
                                 <div class="input-group input-group1">                           
                                     <table  id="tabla" class="table">
                                         <thead >
@@ -226,9 +225,17 @@
                         <br>
                         <div class="form-group">
                         <label class="col-md-2 control-label">Tags:</label>                        
-                            <div class="col-md-8">
+                            <div class="col-md-6">
                                 <div class="input-group input-group1">                           
-                                    <textarea type="text" class="form-control1" placeholder="Buscar ..."></textarea>
+                                    <select type="text" id="tags" class="form-control1" name="tags" multiple="multiple" placeholder="Agrega tus tags aqui ..."></select>
+                                    <script type="text/JavaScript">                                                        
+                                        $('#tags').select2({
+                                            data: ["DBMS","Nodrix","Servidores","Conexiones"],
+                                            tags: true,
+                                            tokenSeparators: [','],
+                                            language: "es"
+                                        });
+                                    </script>
                                 </div>
                             </div>
                             <div class="clearfix"> </div>
@@ -248,115 +255,137 @@
                                 <button class="btn-danger btn">Cancelar.</button>                                    
                             </div>
                         </div>
-                    </div>
-                    
+                    </div>                    
                     <br>
-                </form>                
-            </div>
-            
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <a class="btn btn-primary" href="#navigation-main" aria-label="Skip to main navigation">
-              <i class="fa fa-pencil" aria-hidden="true"></i>
-            </a>
-
-            <a class="btn btn-danger" href="path/to/settings" aria-label="Delete">
-              <i class="fa fa-trash-o" aria-hidden="true"></i>
-            </a>
-
-
-            <g:form action="save" aling="center" class="bs-example5">
-                <fieldset class="form">
-                    Informacion general
-                    <div class="bloque-1">
-                        
-                        <div class="fieldcontain ${hasErrors(bean: bitacoraInstance, field: 'cliente', 'error')} required">
-                            <label for="cliente"> Cliente: </label>
-                            <span class="required-indicator">*</span>
-                            <g:textField name="cliente" value="${bitacora?.cliente}" required=""  /><br>
-                        </div>
-                        
-                        <div class="fieldcontain ${hasErrors(bean: bitacoraInstance, field: 'sucursal', 'error')} required">
-                            <label for="sucursal"> Sucursal: </label>
-                            <span class="required-indicator">*</span>
-                            <g:textField name="sucursal" value="${bitacora?.sucursal}" required=""  /><br>
-                        </div>
-                        <div class="fieldcontain ${hasErrors(bean: bitacoraInstance, field: 'encargado', 'error')} required">
-                             <label for="encargado"> Encargado: </label>
-                        <span class="required-indicator">*</span>
-                        <g:textField name="encargado" value="${bitacora?.encargado}" required=""  /><br>
-                        </div>
-                        <div class="fieldcontain ${hasErrors(bean: bitacoraInstance, field: 'quienReporta', 'error')} required">
-                            <label for="quienReporta"> Quien reporta:</label>
-                            <span class="required-indicator">*</span>
-                            <g:textField name="quienReporta" value="${bitacora?.quienReporta}" required=""  /><br> 
-                        </div>
-
-                        <div class="fieldcontain ${hasErrors(bean: bitacoraInstance, field: 'tipoAsistencia', 'error')} required">
-                            <label for="tipoAsistencia"> Tipo asistencia:</label>
-                            <span class="required-indicator">*</span>
-                            <g:select name="tipoAsistencia"
-                                noSelection="${['null':'Selecciona']}"
-                                from="${TipoAsistencia.list()}"
-                                value="${com?.castor?.bitacora?.tipoAsistencia?.nombre}"
-                                optionValue="nombre"
-                                optionKey="id" />
-                        </div>
-                        <div>
-                            <label for="folio"> Registrar encargado </label>
-                        </div>
-                    </div>
-                    
-                    Informacion de bitacora <br>      
-                    <div>    
-                        <div id="reloj">
-                            <b><label for="empleado"> Agente de soporte: </label></b>
-                            <label for="numero-folio"> Eduardo Hernandes Faku </label>
-                            <b><label for="tiempo"> Tiempo de duracion: </label></b>
-                            <div id="reloj">
-                            <label id="Horas">00</label>
-                            <label id="Minutos">:00</label>
-                            <label id="Segundos">:00</label>        
-                            <input type="button" class="boton" id="continuar" value="Continuar  &#9658;" onclick="inicio();">
-                            <input type="button" class="boton" id="detener" value="Detener &#8718;" onclick="parar();">             
-                        </div>              
-                        </div>
-                        <div class="fieldcontain ${hasErrors(bean: bitacoraInstance, field: 'problema', 'error')} required">
-                            <label for="problema"> Problema: </label>
-                            <span class="required-indicator">*</span>
-                            <g:textArea name="problema" value="${bitacora?.problema}" required=""  /><br>
-                        </div>
-                        <div class="fieldcontain ${hasErrors(bean: bitacoraInstance, field: 'solucion', 'error')} required">
-                             <label for="solucion"> Solucion: </label>
-                            <span class="required-indicator">*</span>
-                            <g:textField name="solucion" value="${bitacora?.solucion}" required=""  /><br>
-                        </div>
-                        <div>
-                            <label for="actividad"> actividad:</label>
-                            <span class="required-indicator">*</span>
-                            <g:textField name="actividad" required=""  /><br> 
-                            <input type="submit" id="agregarActividad" />
-                        </div>                        
-                        <div class="fieldcontain ${hasErrors(bean: bitacoraInstance, field: 'observaciones', 'error')} required">
-                            <label for="observaciones"> Observaciones: </label>
-                            <span class="required-indicator">*</span>
-                            <g:textArea name="observaciones" value="${bitacora?.observaciones}" required=""  /><br>
-                        </div>                        
-                        <div class="fieldcontain ${hasErrors(bean: bitacoraInstance, field: 'tags', 'error')} required">
-                            <label for="tags"> Tags:</label>
-                            <span class="required-indicator">*</span>
-                            <g:textField name="tags" value="${bitacora?.tags}" required=""  /><br> 
-                        </div>                        
-                    </div>
-                </fieldset>
-                <fieldset class="buttons">
-                    <g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" />
-                </fieldset>
-            </g:form>  
+                </form>    
+            </div>                         
         </div>
     </section>
+    <sec:ifAnyGranted roles="ROLE_ADMIN,ROLE_ADMINISTRATIVO,ROLE_GERENCIA,ROLE_TECNICO">
+    <script type="text/JavaScript">    
+        //
+        $(document).ready(function() {
+            $.ajax({
+                type: "GET",
+                url: "/cliente/getAllClientes",
+                dataType: "json",
+                success : function(response) {
+                    //Creo un mapa con el nombre de la empresa y su ID
+                    var data =
+                        $.map(response, function(item){
+                          console.log("id: " + item.id);
+                          console.log("name: " + item.nombreComercial);
+                            return{
+                                id: item.id,
+                                value: item.nombreComercial
+                            }
+                        });
+                    $("#searchCliente").autocomplete({
+                        source: data,
+                        select: function (event, ui){
+                            console.log("ID seleccionado:" + ui.item.id);
+                            console.log("Nombre:" + ui.item.value);
+                            $('#clienteID').val(ui.item.id);
+                        }
+                    });
+                }
+            }); 
+        });
+
+        //Función que autocompleta los posibles resultados para la búsqueda de una sucursal
+        $(document).ready(function() {
+            $.ajax({
+                type: "GET",
+                url: "/sucursal/getAllSucursales",
+                dataType: "json",
+                success : function(response) {
+                    //Creo un mapa con el nombre de la empresa y su ID
+                    var data =
+                        $.map(response, function(item){
+                          console.log("id: " + item.id);
+                          console.log("name: " + item.nombre);
+                            return{
+                                id: item.id,
+                                value: item.nombre
+                            }
+                        }); 
+                    $("#searchSucursal").autocomplete({
+                        source: data,
+                        select: function (event, ui){
+                            console.log("ID seleccionado:" + ui.item.id);
+                            console.log("Nombre:" + ui.item.value);
+                            $('#sucursalID').val(ui.item.id);
+                        }
+                    }); 
+                }
+            }); 
+        });
+
+        //Función que autocompleta los posibles resultados para la búsqueda de un encargado con autorizacion
+        $(document).ready(function() {
+            $.ajax({
+                type: "GET",
+                url: "/encargado/getAllQuienAutoriza",
+                dataType: "json",
+                success : function(response) {
+                    //Creo un mapa con el nombre de la empresa y su ID
+                    var data =
+                        $.map(response, function(item){
+                          console.log("ID: " + item.id);
+                          console.log("nombre: " + item.nombre);
+                          console.log("apMaterno: " + item.apellidoMaterno);
+                          console.log("apPaterno: " + item.apellidoPaterno);
+                          console.log("completo: " + item.apellidoPaterno+" "+item.apellidoMaterno +" "+item.nombre);
+                            return{
+                                id: item.id,
+                                value: item.apellidoPaterno +" "+ item.apellidoMaterno +" "+ item.nombre
+                            }
+                        }); 
+                    $("#searchQuienAutoriza").autocomplete({
+                        source: data,
+                        select: function (event, ui){
+                            console.log("ID seleccionado:" + ui.item.id);
+                            console.log("Nombre:" + ui.item.value);
+                            $('#quienAutorizaID').val(ui.item.id);
+                        }
+                    }); 
+                }
+            }); 
+        });
+
+
+        //Función que autocompleta los posibles resultados para la búsqueda de un encargado sin autorizacion
+        $(document).ready(function() {
+            $.ajax({
+                type: "GET",
+                url: "/encargado/getAllEncargado",
+                dataType: "json",
+                success : function(response) {
+                    //Creo un mapa con el nombre de la empresa y su ID
+                    var data =
+                        $.map(response, function(item){                
+                          console.log("ID: " + item.id);
+                          console.log("nombre: " + item.nombre);
+                          console.log("apMaterno: " + item.apellidoMaterno);
+                          console.log("apPaterno: " + item.apellidoPaterno);
+                          console.log("completo: " + item.apellidoPaterno+" "+item.apellidoMaterno +" "+item.nombre);
+                            return{
+                                id: item.id,
+                                value: item.apellidoPaterno +" "+ item.apellidoMaterno +" "+ item.nombre
+                            }
+                        }); 
+                    $("#searchQuienSolicita").autocomplete({
+                        source: data,
+                        select: function (event, ui){
+                            console.log("ID seleccionado:" + ui.item.id);
+                            console.log("Nombre:" + ui.item.value);
+                            $('#quienSolicitaID').val(ui.item.id);
+                        }
+                    }); 
+                }
+            }); 
+        });
+    </script>
+    </sec:ifAnyGranted>                
 </body>
 </html>

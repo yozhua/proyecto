@@ -1,31 +1,140 @@
+%@ page import="com.castor.cliente.*"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'sucursal.label', default: 'Sucursal')}" />
-        <title><g:message code="default.show.label" args="[entityName]" /></title>
+        <title><g:message code="Visualizar sucursal." /></title>
     </head>
     <body>
-        <a href="#show-sucursal" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-        <div class="nav" role="navigation">
-            <ul>
-                <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-                <li><g:link class="list" action="index"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-                <li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-            </ul>
-        </div>
         <div id="show-sucursal" class="content scaffold-show" role="main">
-            <h1><g:message code="default.show.label" args="[entityName]" /></h1>
             <g:if test="${flash.message}">
-            <div class="message" role="status">${flash.message}</div>
-            </g:if>
-            <f:display bean="sucursal" />
-            <g:form resource="${this.sucursal}" method="DELETE">
-                <fieldset class="buttons">
-                    <g:link class="edit" action="edit" resource="${this.sucursal}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
-                    <input class="delete" type="submit" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-                </fieldset>
-            </g:form>
+                    <script>
+                    $( document ).ready(
+                        function() {
+                            var delay = alertify.get('notifier','delay');
+                            alertify.set('notifier','delay', 13);
+                            alertify.success("${flash.message}");
+                            alertify.set('notifier','delay', delay);
+                        }
+                    );
+                </script>
+            </g:if>                        
+            <br>
+            <h1 align="center">Visualizar sucursal.</h1><br>
+            <div class="panel-body panel-body-inputin">                            
+                <g:hiddenField name="version" value="${this.sucursal?.version}" />
+                    <div class="bs-example5">
+                    <legend><h4>Información general.</h4></legend>  
+                        <div class="form-group">
+                            <label class="col-md-2 control-label"><b>Nombre Cliente:</b></label>
+                            <div class="col-md-3">
+                                <div class="input-group input-group1">
+                                    <p>${sucursal?.cliente?.nombreComercial}</p>
+                                </div>
+                            </div>                              
+                            <div class="clearfix"> </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label"><b>Nombre Sucursal:</b></label>
+                            <div class="col-md-3">
+                                <div class="input-group input-group1">
+                                    <p>${sucursal?.nombre}</p>
+                                </div>
+                            </div>
+                            <label class="col-md-2 control-label"><b>Tipo de sucursal:</b></label>
+                            <div class="col-md-3">
+                                    <p>${sucursal?.tipoSucursal?.nombre}</p>
+                            </div>                     
+                            <div class="clearfix"> </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label"><b>Teléfono:</b></label>
+                            <div class="col-md-3">
+                                <div class="input-group input-group1">
+                                    <p>${sucursal?.telefono}</p>
+                                </div>
+                            </div>       
+                            <label class="col-md-2 control-label"><b>Calle:</b></label>
+                            <div class="col-md-3">
+                                <div class="input-group input-group1">
+                                <p>${sucursal?.calle}</p>
+                                </div>
+                            </div>                            
+                            <div class="clearfix"> </div>
+                        </div>                            
+                        <div class="form-group">
+                            <label class="col-md-2 control-label"><b>Número exterior:</b></label>
+                            <div class="col-md-3">
+                                <div class="input-group input-group1">
+                                    <p>${sucursal?.numeroExterior}</p>
+                                </div>
+                            </div>
+                            <label class="col-md-2 control-label"><b>Número interior:</b></label>
+                            <div class="col-md-3">
+                                <div class="input-group input-group1">
+                                    <p>${sucursal?.numeroInterior}</p>
+                                </div>
+                            </div>                            
+                            <div class="clearfix"> </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label"><b>Colonia:</b></label>
+                            <div class="col-md-3">
+                                <div class="input-group input-group1">
+                                    <p>${sucursal?.colonia}</p>
+                                </div>
+                            </div>
+                            <label class="col-md-2 control-label"><b>Ciudad:</b></label>
+                            <div class="col-md-3">
+                                <div class="input-group input-group1">
+                                    <p>${sucursal?.ciudad}</p>
+                                </div>
+                            </div>                            
+                            <div class="clearfix"> </div>
+                        </div> 
+                        <div class="form-group">
+                            <label class="col-md-2 control-label"><b>Municipio:</b></label>
+                            <div class="col-md-3">
+                                <div class="input-group input-group1">
+                                    <p>${sucursal?.municipio}</p>
+                                </div>
+                            </div> 
+                            <label class="col-md-2 control-label"><b>Estado:</b></label>
+                            <div class="col-md-3">
+                                <div class="input-group input-group1">
+                                    <p>${sucursal?.estado}</p>
+                                </div>
+                            </div>
+                            <div class="clearfix"> </div>
+                        </div>                          
+                        <div class="form-group">
+                            <label class="col-md-2 control-label"><b>Pais:</b></label>
+                            <div class="col-md-3">
+                                <div class="input-group input-group1">
+                                    <p>${sucursal?.pais}</p>                                                               
+                                </div>
+                            </div>
+                            <label class="col-md-2 control-label"><b>Codigo postal:</b></label>
+                            <div class="col-md-3">
+                                <div class="input-group input-group1">
+                                    <p>${sucursal?.pais}</p>                                                               
+                                </div>
+                            </div>                            
+                            <div class="clearfix"> </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label"><b>Referencias:</b></label>
+                            <div class="col-md-8">
+                                <div class="input-group input-group1">
+                                    <p>${sucursal?.referencias}</p>                                                               
+                                </div>
+                            </div>                            
+                            <div class="clearfix"> </div>
+                        </div>
+                    </div>
+            </div>
         </div>
+    </section>        
     </body>
 </html>
